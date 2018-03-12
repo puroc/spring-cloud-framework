@@ -1,4 +1,4 @@
-package com.emrubik.springcloud.center;
+package com.example.springcloud.apigw;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringcloudCenterApplicationTests {
+public class SpringcloudApigwApplicationTests {
 
 	@Test
 	public void contextLoads() {

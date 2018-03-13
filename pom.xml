@@ -27,7 +27,15 @@
 	</properties>
 
 	<modules>
+		<module>springcloud-common</module>
+		<module>springcloud-domain</module>
+		<module>springcloud-api</module>
+		<module>springcloud-dao</module>
 		<module>springcloud-center</module>
+		<module>springcloud-config</module>
+		<module>springcloud-apigw</module>
+		<module>springcloud-idm</module>
+		<module>springcloud-auth</module>
 	</modules>
 
 	<dependencies>

@@ -89,22 +89,22 @@ public class AdminAccessFilter extends ZuulFilter {
         if (isStartWith(requestUri)) {
             return null;
         }
-        IJWTInfo user = null;
-        try {
-            user = getJWTUser(request, ctx);
-        } catch (Exception e) {
-            setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
-            return null;
-        }
-        List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
-        // 判断资源是否启用权限约束
-        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
-        List<PermissionInfo> result = stream.collect(Collectors.toList());
-        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
-        if (permissions.length > 0) {
-            checkUserPermission(permissions, ctx, user);
-        }
-        BaseContextHandler.remove();
+//        IJWTInfo user = null;
+//        try {
+//            user = getJWTUser(request, ctx);
+//        } catch (Exception e) {
+//            setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
+//            return null;
+//        }
+//        List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
+//        // 判断资源是否启用权限约束
+//        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
+//        List<PermissionInfo> result = stream.collect(Collectors.toList());
+//        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+//        if (permissions.length > 0) {
+//            checkUserPermission(permissions, ctx, user);
+//        }
+//        BaseContextHandler.remove();
         return null;
     }
 

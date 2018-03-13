@@ -1,5 +1,6 @@
 package com.example.springcloud.apigw;
 
+import com.emrubik.springcloud.auth.client.EnableAceAuthClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
+@EnableAceAuthClient
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableZuulProxy

@@ -1,6 +1,7 @@
 logging:
     level:
 #        tk.mybatis: DEBUG
+        okhttp3: DEBUG
         com.emrubik.springcloud.auth: DEBUG
 spring:
     application:

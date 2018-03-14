@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(FeignApiAutoConfig.class)
+@Import(FeignApiAutoConfig.class)//导入FeignApiAutoConfig配置
 @Documented
 @Inherited
 public @interface EnableFeignApi {

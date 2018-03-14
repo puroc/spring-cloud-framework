@@ -14,6 +14,7 @@ public class UserController {
         user2.setId("123");
         user2.setUsername(user.getUsername());
         user2.setPassword(user.getPassword());
+        System.out.println("haha");
         return user2;
     }
 }

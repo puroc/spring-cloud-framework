@@ -19,6 +19,7 @@ public class AuthController {
 
     @PostMapping("token")
     public ResponseEntity<?> createToken(User user) throws Exception {
+        System.out.println("xixi");
         String token = authService.createToken(user);
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }

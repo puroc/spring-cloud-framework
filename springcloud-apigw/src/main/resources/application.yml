@@ -75,10 +75,6 @@ gate:
   ignore:
     startWith: /static,/auth/token
 
-auth:
-  user:
-    token-header: Authorization
-
 eureka:
     instance:
         statusPageUrlPath: /info
@@ -107,5 +103,4 @@ feign:
 
 jwt:
   token-header: Authorization
-  rsa-secret: xx1WET12^%3^(WE45
   expire: 3600

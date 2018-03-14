@@ -1,6 +1,5 @@
 logging:
     level:
-#        tk.mybatis: DEBUG
         com.emrubik.springcloud.idm: DEBUG
 spring:
     application:
@@ -40,7 +39,7 @@ spring:
 #    xmlLocation: classpath:mapper/**/*.xml
 
 server:
-    port: 8762
+    port: 8763
 
 eureka:
     instance:

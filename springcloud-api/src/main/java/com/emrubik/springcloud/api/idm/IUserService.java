@@ -7,12 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @FeignClient(value = "springcloud-idm")
 public interface IUserService {
-
-//  @PostMapping("/user/validate")
-//  public User validate(@RequestParam("username") String username, @RequestParam("password") String password);
 
   @PostMapping("/user/validate")
   public User validate(User user);

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public class UserInfo implements Serializable{
+public class User implements Serializable{
     public String id;
     public String username;
     public String password;

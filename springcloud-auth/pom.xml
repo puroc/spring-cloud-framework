@@ -18,7 +18,6 @@
 	</parent>
 
 	<modules>
-		<module>springcloud-auth-client</module>
 		<module>springcloud-auth-common</module>
 		<module>springcloud-auth-server</module>
 	</modules>

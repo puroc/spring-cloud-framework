@@ -1,28 +1,11 @@
 package com.example.springcloud.apigw.filter;
 
 import com.alibaba.fastjson.JSON;
-//import com.emrubik.springcloud.common.BaseContextHandler;
-//import com.github.wxiaoqi.security.api.vo.authority.PermissionInfo;
-//import com.github.wxiaoqi.security.api.vo.log.LogInfo;
-//import com.github.wxiaoqi.security.auth.client.config.ServiceAuthConfig;
-//import com.github.wxiaoqi.security.auth.client.config.UserAuthConfig;
-//import com.github.wxiaoqi.security.auth.client.jwt.ServiceAuthUtil;
-//import com.github.wxiaoqi.security.auth.client.jwt.UserAuthUtil;
-//import com.github.wxiaoqi.security.auth.common.util.jwt.IJWTInfo;
-//import com.github.wxiaoqi.security.common.context.BaseContextHandler;
-//import com.github.wxiaoqi.security.common.msg.auth.TokenErrorResponse;
-//import com.github.wxiaoqi.security.common.msg.auth.TokenForbiddenResponse;
-//import com.github.wxiaoqi.security.common.util.ClientUtil;
-//import com.github.wxiaoqi.security.gate.feign.ILogService;
-//import com.github.wxiaoqi.security.gate.feign.IUserService;
-//import com.github.wxiaoqi.security.gate.utils.DBLog;
 import com.emrubik.springcloud.api.idm.IUserService;
-import com.emrubik.springcloud.auth.client.config.UserAuthConfig;
-import com.emrubik.springcloud.auth.client.jwt.UserAuthUtil;
-import com.emrubik.springcloud.auth.common.BaseContextHandler;
-import com.emrubik.springcloud.auth.common.msg.TokenErrorResponse;
+import com.emrubik.springcloud.auth.common.domain.JwtInfo;
 import com.emrubik.springcloud.auth.common.msg.TokenForbiddenResponse;
-import com.emrubik.springcloud.auth.common.util.jwt.IJWTInfo;
+import com.emrubik.springcloud.auth.common.util.BaseContextHandler;
+import com.emrubik.springcloud.auth.common.util.JwtHelper;
 import com.emrubik.springcloud.domain.authority.PermissionInfo;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -36,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -57,10 +38,7 @@ public class AdminAccessFilter extends ZuulFilter {
     private String zuulPrefix;
 
     @Autowired
-    private UserAuthUtil userAuthUtil;
-
-    @Autowired
-    private UserAuthConfig userAuthConfig;
+    private JwtHelper jwtHelper;
 
 
     @Override
@@ -129,9 +107,9 @@ public class AdminAccessFilter extends ZuulFilter {
         });
     }
 
-    private void setCurrentUserInfo(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
-        ctx.addZuulRequestHeader("userId", user.getId());
-        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
+    private void setCurrentUserInfo(RequestContext ctx, JwtInfo user, PermissionInfo pm) {
+        ctx.addZuulRequestHeader("userId", user.getUserId());
+        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getUsername()));
 
     }
 
@@ -142,19 +120,19 @@ public class AdminAccessFilter extends ZuulFilter {
      * @param ctx
      * @return
      */
-    private IJWTInfo getJWTUser(HttpServletRequest request, RequestContext ctx) throws Exception {
-        String authToken = request.getHeader(userAuthConfig.getTokenHeader());
+    private JwtInfo getJWTUser(HttpServletRequest request, RequestContext ctx) throws Exception {
+        String authToken = request.getHeader(jwtHelper.getTokenHeader());
         if (StringUtils.isBlank(authToken)) {
             authToken = request.getParameter("token");
         }
-        ctx.addZuulRequestHeader(userAuthConfig.getTokenHeader(), authToken);
+        ctx.addZuulRequestHeader(jwtHelper.getTokenHeader(), authToken);
         BaseContextHandler.setToken(authToken);
-        return userAuthUtil.getInfoFromToken(authToken);
+        return jwtHelper.getInfoFromToken(authToken);
     }
 
 
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
-        List<PermissionInfo> permissionInfos = userService.getPermissionByUsername(user.getUniqueName());
+    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, JwtInfo user) {
+        List<PermissionInfo> permissionInfos = userService.getPermissionByUserId(user.getUserId());
         PermissionInfo current = null;
         for (PermissionInfo info : permissions) {
             boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {

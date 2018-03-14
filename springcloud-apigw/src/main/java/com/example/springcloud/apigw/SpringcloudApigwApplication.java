@@ -1,19 +1,16 @@
 package com.example.springcloud.apigw;
 
-import com.emrubik.springcloud.auth.client.EnableAceAuthClient;
+import com.emrubik.springcloud.api.annotation.EnableFeignApi;
+import com.emrubik.springcloud.auth.common.annotation.EnableJwt;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
-@EnableAceAuthClient
-@EnableDiscoveryClient
-@EnableFeignClients
+@EnableJwt
+@EnableFeignApi
 @EnableZuulProxy
-@EnableScheduling
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringcloudApigwApplication {
 

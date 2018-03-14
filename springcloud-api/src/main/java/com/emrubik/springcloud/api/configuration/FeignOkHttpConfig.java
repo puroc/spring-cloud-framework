@@ -1,8 +1,7 @@
-package com.emrubik.springcloud.auth.client.config;
+package com.emrubik.springcloud.api.configuration;
 
 import feign.Feign;
 import okhttp3.ConnectionPool;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
@@ -11,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
-@AutoConfigureBefore(FeignAutoConfiguration.class)
 @Configuration
+@AutoConfigureBefore(FeignAutoConfiguration.class)
 @ConditionalOnClass(Feign.class)
 public class FeignOkHttpConfig {
 

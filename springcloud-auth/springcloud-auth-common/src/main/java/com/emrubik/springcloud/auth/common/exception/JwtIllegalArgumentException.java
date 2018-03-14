@@ -1,4 +1,4 @@
-package com.emrubik.springcloud.auth.client.exception;
+package com.emrubik.springcloud.auth.common.exception;
 
 
 public class JwtIllegalArgumentException extends Exception {

@@ -17,8 +17,8 @@ public interface IUserService {
   @RequestMapping(value = "/api/user/validate", method = RequestMethod.POST)
   public UserInfo validate(@RequestParam("username") String username, @RequestParam("password") String password);
 
-  @RequestMapping(value="/api/user/un/{username}/permissions",method = RequestMethod.GET)
-  public List<PermissionInfo> getPermissionByUsername(@PathVariable("username") String username);
+  @RequestMapping(value="/api/user/{id}/permissions",method = RequestMethod.GET)
+  public List<PermissionInfo> getPermissionByUserId(@PathVariable("id") String userId);
 
   @RequestMapping(value="/api/permissions",method = RequestMethod.GET)
   public List<PermissionInfo> getAllPermissionInfo();

@@ -1,51 +1,49 @@
-package com.emrubik.springcloud.auth.client.interceptor;
+package com.emrubik.springcloud.auth.common.interceptor;
 
-import com.emrubik.springcloud.auth.client.annotation.IgnoreUserToken;
-import com.emrubik.springcloud.auth.client.config.UserAuthConfig;
-import com.emrubik.springcloud.auth.client.jwt.UserAuthUtil;
-import com.emrubik.springcloud.auth.common.BaseContextHandler;
-import com.emrubik.springcloud.auth.common.util.jwt.IJWTInfo;
+import com.emrubik.springcloud.auth.common.util.BaseContextHandler;
+import com.emrubik.springcloud.auth.common.annotation.IgnoreJwt;
+import com.emrubik.springcloud.auth.common.domain.JwtInfo;
+import com.emrubik.springcloud.auth.common.util.JwtHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UserAuthRestInterceptor extends HandlerInterceptorAdapter {
+@Component
+public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    private UserAuthUtil userAuthUtil;
-
-    @Autowired
-    private UserAuthConfig userAuthConfig;
+    private JwtHelper jwtHelper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         // 配置该注解，说明不进行用户拦截
-        IgnoreUserToken annotation = handlerMethod.getBeanType().getAnnotation(IgnoreUserToken.class);
+        IgnoreJwt annotation = handlerMethod.getBeanType().getAnnotation(IgnoreJwt.class);
         if (annotation == null) {
-            annotation = handlerMethod.getMethodAnnotation(IgnoreUserToken.class);
+            annotation = handlerMethod.getMethodAnnotation(IgnoreJwt.class);
         }
         if (annotation != null) {
             return super.preHandle(request, response, handler);
         }
-        String token = request.getHeader(userAuthConfig.getTokenHeader());
+        String token = request.getHeader(jwtHelper.getTokenHeader());
         if (StringUtils.isEmpty(token)) {
             if (request.getCookies() != null) {
                 for (Cookie cookie : request.getCookies()) {
-                    if (cookie.getName().equals(userAuthConfig.getTokenHeader())) {
+                    if (cookie.getName().equals(jwtHelper.getTokenHeader())) {
                         token = cookie.getValue();
                     }
                 }
             }
         }
-        IJWTInfo infoFromToken = userAuthUtil.getInfoFromToken(token);
-        BaseContextHandler.setUsername(infoFromToken.getUniqueName());
-        BaseContextHandler.setName(infoFromToken.getName());
-        BaseContextHandler.setUserID(infoFromToken.getId());
+        JwtInfo jwtInfo = jwtHelper.getInfoFromToken(token);
+        BaseContextHandler.setUserName(jwtInfo.getUsername());
+        BaseContextHandler.setUserId(jwtInfo.getUserId());
         return super.preHandle(request, response, handler);
     }
 

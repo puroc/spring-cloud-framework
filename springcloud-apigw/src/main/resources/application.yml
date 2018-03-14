@@ -73,7 +73,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt
+    startWith: /static,/auth/token
 
 auth:
   user:
@@ -104,3 +104,8 @@ feign:
       min-request-size: 2048
     response:
       enabled: true
+
+jwt:
+  token-header: Authorization
+  rsa-secret: xx1WET12^%3^(WE45
+  expire: 3600

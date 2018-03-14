@@ -1,8 +1,7 @@
-package com.emrubik.springcloud.auth.common;
+package com.emrubik.springcloud.auth.common.util;
 
 import com.emrubik.springcloud.auth.common.constants.CommonConstants;
 import com.emrubik.springcloud.auth.common.util.StringHelper;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class BaseContextHandler {
         map.put(key, value);
     }
 
-    public static Object get(String key){
+    public static Object get(String key) {
         Map<String, Object> map = threadLocal.get();
         if (map == null) {
             map = new HashMap<String, Object>();
@@ -27,43 +26,38 @@ public class BaseContextHandler {
         return map.get(key);
     }
 
-    public static String getUserID(){
+    public static String getUserId() {
         Object value = get(CommonConstants.CONTEXT_KEY_USER_ID);
         return returnObjectValue(value);
     }
 
-    public static String getUsername(){
+    public static String getUserName() {
         Object value = get(CommonConstants.CONTEXT_KEY_USERNAME);
         return returnObjectValue(value);
     }
 
-
-    public static String getName(){
-        Object value = get(CommonConstants.CONTEXT_KEY_USER_NAME);
-        return StringHelper.getObjectValue(value);
-    }
-
-    public static String getToken(){
+    public static String getToken() {
         Object value = get(CommonConstants.CONTEXT_KEY_USER_TOKEN);
         return StringHelper.getObjectValue(value);
     }
-    public static void setToken(String token){set(CommonConstants.CONTEXT_KEY_USER_TOKEN,token);}
 
-    public static void setName(String name){set(CommonConstants.CONTEXT_KEY_USER_NAME,name);}
-
-    public static void setUserID(String userID){
-        set(CommonConstants.CONTEXT_KEY_USER_ID,userID);
+    public static void setToken(String token) {
+        set(CommonConstants.CONTEXT_KEY_USER_TOKEN, token);
     }
 
-    public static void setUsername(String username){
-        set(CommonConstants.CONTEXT_KEY_USERNAME,username);
+    public static void setUserId(String userID) {
+        set(CommonConstants.CONTEXT_KEY_USER_ID, userID);
+    }
+
+    public static void setUserName(String username) {
+        set(CommonConstants.CONTEXT_KEY_USERNAME, username);
     }
 
     private static String returnObjectValue(Object value) {
-        return value==null?null:value.toString();
+        return value == null ? null : value.toString();
     }
 
-    public static void remove(){
+    public static void remove() {
         threadLocal.remove();
     }
 

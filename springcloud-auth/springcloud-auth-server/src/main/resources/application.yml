@@ -83,9 +83,10 @@ hystrix:
           thread:
             timeoutInMilliseconds: 110000
 
-auth:
-  user:
-    token-header: Authorization
+jwt:
+  token-header: Authorization
+  rsa-secret: xx1WET12^%3^(WE45
+  expire: 3600
 
 #redis-cache 相关
 #redis:

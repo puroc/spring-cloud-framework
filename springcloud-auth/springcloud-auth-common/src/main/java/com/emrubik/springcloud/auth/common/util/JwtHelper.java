@@ -12,16 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@Component
 public class JwtHelper {
-
-    //过期时间，单位:秒
-    @Value("${jwt.expire}")
-    private int expire;
-
-    //token在http消息中的头域
-    @Value("${jwt.token-header}")
-    private String tokenHeader;
 
     private static final String SECRET = "XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW";
 
@@ -29,7 +20,8 @@ public class JwtHelper {
 
     private static final String PAYLOAD = "payload";
 
-    public String generateToken(JwtInfo jwtInfo) throws Exception {
+    //expire过期时间，单位：秒
+    public String generateToken(JwtInfo jwtInfo,int expire) throws Exception {
         return sign(jwtInfo, expire * 1000);
     }
 

@@ -10,7 +10,7 @@ spring:
         default-property-inclusion: non_null
     datasource:
         name: test
-        url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/mybatis?characterEncoding=utf8
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/springcloud_db?characterEncoding=utf8
         username: root
         password: 123456
         # 使用druid数据源

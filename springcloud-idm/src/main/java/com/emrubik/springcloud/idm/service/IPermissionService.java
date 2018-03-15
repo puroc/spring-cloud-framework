@@ -1,6 +1,6 @@
 package com.emrubik.springcloud.idm.service;
 
-import com.emrubik.springcloud.dao.entity.Role;
+import com.emrubik.springcloud.dao.entity.Permission;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author puroc123
  * @since 2018-03-15
  */
-public interface IRoleService extends IService<Role> {
+public interface IPermissionService extends IService<Permission> {
 
 }

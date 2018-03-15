@@ -13,12 +13,14 @@ import java.io.Serializable;
  * @author puroc123
  * @since 2018-03-15
  */
-public class Role extends Model<Role> {
+public class Permission extends Model<Permission> {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
     private String name;
+    private String url;
+    private Integer parentId;
 
 
     public Integer getId() {
@@ -37,6 +39,22 @@ public class Role extends Model<Role> {
         this.name = name;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -44,9 +62,11 @@ public class Role extends Model<Role> {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Permission{" +
         ", id=" + id +
         ", name=" + name +
+        ", url=" + url +
+        ", parentId=" + parentId +
         "}";
     }
 }

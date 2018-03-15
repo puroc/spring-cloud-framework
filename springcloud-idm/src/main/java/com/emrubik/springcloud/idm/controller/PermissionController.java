@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
  * @since 2018-03-15
  */
 @Controller
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/permission")
+public class PermissionController {
 
 }
 

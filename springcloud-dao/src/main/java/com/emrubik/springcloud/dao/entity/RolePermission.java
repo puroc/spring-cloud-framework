@@ -13,12 +13,13 @@ import java.io.Serializable;
  * @author puroc123
  * @since 2018-03-15
  */
-public class Role extends Model<Role> {
+public class RolePermission extends Model<RolePermission> {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private String name;
+    private Integer roleId;
+    private Integer permissionId;
 
 
     public Integer getId() {
@@ -29,12 +30,20 @@ public class Role extends Model<Role> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(Integer permissionId) {
+        this.permissionId = permissionId;
     }
 
     @Override
@@ -44,9 +53,10 @@ public class Role extends Model<Role> {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "RolePermission{" +
         ", id=" + id +
-        ", name=" + name +
+        ", roleId=" + roleId +
+        ", permissionId=" + permissionId +
         "}";
     }
 }

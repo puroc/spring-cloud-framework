@@ -1,6 +1,6 @@
 package com.emrubik.springcloud.dao.mapper;
 
-import com.emrubik.springcloud.dao.entity.User;
+import com.emrubik.springcloud.dao.entity.Org;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author puroc123
  * @since 2018-03-15
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface OrgMapper extends BaseMapper<Org> {
 
 }

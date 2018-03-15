@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,27 +18,22 @@ import java.util.List;
  *  前端控制器
  * </p>
  *
- * @author pud123
+ * @author puroc123
  * @since 2018-03-15
  */
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private IUserService userService;
 
-    @GetMapping("test")
-    public User test(){
-        User user = new User();
-        user.setName("pud");
-        user.setAge(23);
-        userService.insert(user);
+    @GetMapping("/test")
+    @ResponseBody
+    public User get(){
         List<User> list = userService.selectList(Condition.create().eq("name", "pud"));
-        if(list.size()>0){
-            return list.get(0);
-        }
-        return null;
+        return list.get(0);
     }
+
 }
 

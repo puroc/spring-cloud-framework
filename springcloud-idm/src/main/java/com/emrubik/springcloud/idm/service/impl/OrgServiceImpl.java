@@ -1,9 +1,9 @@
 package com.emrubik.springcloud.idm.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.emrubik.springcloud.dao.entity.User;
-import com.emrubik.springcloud.dao.mapper.UserMapper;
-import com.emrubik.springcloud.idm.service.IUserService;
+import com.emrubik.springcloud.dao.entity.Org;
+import com.emrubik.springcloud.dao.mapper.OrgMapper;
+import com.emrubik.springcloud.idm.service.IOrgService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2018-03-15
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements IOrgService {
 
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author puroc123
  * @since 2018-03-15
  */
-public class Role extends Model<Role> {
+public class Org extends Model<Org> {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public class Role extends Model<Role> {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Org{" +
         ", id=" + id +
         ", name=" + name +
         "}";

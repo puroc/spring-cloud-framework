@@ -19,6 +19,7 @@ public class Org extends Model<Org> {
 
     private Integer id;
     private String name;
+    private Integer parentId;
 
 
     public Integer getId() {
@@ -37,6 +38,14 @@ public class Org extends Model<Org> {
         this.name = name;
     }
 
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -47,6 +56,7 @@ public class Org extends Model<Org> {
         return "Org{" +
         ", id=" + id +
         ", name=" + name +
+        ", parentId=" + parentId +
         "}";
     }
 }

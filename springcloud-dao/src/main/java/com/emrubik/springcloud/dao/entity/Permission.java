@@ -19,8 +19,10 @@ public class Permission extends Model<Permission> {
 
     private Integer id;
     private String name;
-    private String url;
     private Integer parentId;
+    private String code;
+    private String type;
+    private String url;
 
 
     public Integer getId() {
@@ -39,20 +41,36 @@ public class Permission extends Model<Permission> {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public Integer getParentId() {
         return parentId;
     }
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -65,8 +83,10 @@ public class Permission extends Model<Permission> {
         return "Permission{" +
         ", id=" + id +
         ", name=" + name +
-        ", url=" + url +
         ", parentId=" + parentId +
+        ", code=" + code +
+        ", type=" + type +
+        ", url=" + url +
         "}";
     }
 }

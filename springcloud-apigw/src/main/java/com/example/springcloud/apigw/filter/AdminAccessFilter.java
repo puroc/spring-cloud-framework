@@ -109,7 +109,7 @@ public class AdminAccessFilter extends ZuulFilter {
 
     private void setCurrentUserInfo(RequestContext ctx, JwtInfo user, PermissionInfo pm) {
         ctx.addZuulRequestHeader("userId", user.getUserId());
-        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getUsername()));
+//        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getUsername()));
 
     }
 

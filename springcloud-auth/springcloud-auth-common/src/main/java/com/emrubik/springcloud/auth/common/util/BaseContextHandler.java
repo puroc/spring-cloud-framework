@@ -1,7 +1,7 @@
 package com.emrubik.springcloud.auth.common.util;
 
 import com.emrubik.springcloud.auth.common.constants.CommonConstants;
-import com.emrubik.springcloud.auth.common.util.StringHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class BaseContextHandler {
 
     public static String getToken() {
         Object value = get(CommonConstants.CONTEXT_KEY_USER_TOKEN);
-        return StringHelper.getObjectValue(value);
+        return value==null?"":value.toString();
     }
 
     public static void setToken(String token) {

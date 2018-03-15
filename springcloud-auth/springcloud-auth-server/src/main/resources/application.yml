@@ -89,6 +89,13 @@ jwt:
   rsa-secret: xx1WET12^%3^(WE45
   expire: 3600
 
+info:
+  app:
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"
+    spring-boot-version: "@project.parent.version@"
+
 #redis-cache 相关
 #redis:
 #    pool:

@@ -61,7 +61,11 @@
 			<artifactId>springcloud-dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.emrubik</groupId>
+			<artifactId>springcloud-auth-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

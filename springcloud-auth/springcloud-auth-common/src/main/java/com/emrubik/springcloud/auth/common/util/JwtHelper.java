@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
 public class JwtHelper {
 
     private static final String SECRET = "XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW";
@@ -21,16 +20,16 @@ public class JwtHelper {
     private static final String PAYLOAD = "payload";
 
     //expire过期时间，单位：秒
-    public String generateToken(JwtInfo jwtInfo,int expire) throws Exception {
+    public static String generateToken(JwtInfo jwtInfo,int expire) throws Exception {
         return sign(jwtInfo, expire * 1000);
     }
 
-    public JwtInfo getInfoFromToken(String token) throws Exception {
+    public static JwtInfo getInfoFromToken(String token) throws Exception {
         return unsign(token, JwtInfo.class);
     }
 
     //加密，传入一个对象和有效期
-    private <T> String sign(T object, long maxAge) {
+    private static <T> String sign(T object, long maxAge) {
         try {
             final JWTSigner signer = new JWTSigner(SECRET);
             final Map<String, Object> claims = new HashMap<String, Object>();
@@ -45,7 +44,7 @@ public class JwtHelper {
     }
 
     //解密，传入一个加密后的token字符串和解密后的类型
-    private <T> T unsign(String jwt, Class<T> classT) {
+    private static <T> T unsign(String jwt, Class<T> classT) {
         final JWTVerifier verifier = new JWTVerifier(SECRET);
         try {
             final Map<String, Object> claims = verifier.verify(jwt);

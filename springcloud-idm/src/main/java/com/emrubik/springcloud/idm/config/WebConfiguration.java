@@ -26,6 +26,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
+        commonPathPatterns.add("/user/login");
         registry.addInterceptor(getJwtInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         super.addInterceptors(registry);
     }

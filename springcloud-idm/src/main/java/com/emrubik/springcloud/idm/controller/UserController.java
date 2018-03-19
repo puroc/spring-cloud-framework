@@ -52,10 +52,11 @@ public class UserController {
     @PostMapping("/login")
     public @NotNull ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
         LoginReq loginReq = baseReq.getPayloads().get(0);
+
         //验证用户合法性
         User user = userService.selectOne(new EntityWrapper<User>().eq("username", loginReq.getUsername()).eq("password", loginReq.getPassword()));
 
-        BaseResp resp = new BaseResp();
+        BaseResp<LoginResp> resp = new BaseResp<LoginResp>();
         //用户不存在，返回登录失败
         if (user == null) {
             resp.setResultCode(BaseResp.RESULT_FAILED);

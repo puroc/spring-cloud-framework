@@ -26,7 +26,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
-        commonPathPatterns.add("/user/login");
         registry.addInterceptor(getJwtInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         super.addInterceptors(registry);
     }
@@ -47,7 +46,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
                 "/v2/api-docs",
                 "/swagger-resources/**",
                 "/cache/**",
-                "/api/log/save"
+                "/api/log/save",
+                "/error"
         };
         Collections.addAll(list, urls);
         return list;

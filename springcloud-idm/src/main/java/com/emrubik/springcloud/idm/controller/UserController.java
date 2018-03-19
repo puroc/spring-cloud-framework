@@ -3,6 +3,7 @@ package com.emrubik.springcloud.idm.controller;
 
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.emrubik.springcloud.common.annotation.IgnoreJwtValidation;
 import com.emrubik.springcloud.common.util.JwtHelper;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @Controller
 @Validated
-@RequestMapping("/user")
+@RequestMapping("/idm/user")
 public class UserController {
 
     @Autowired
@@ -47,6 +48,7 @@ public class UserController {
         return list.get(0);
     }
 
+    @IgnoreJwtValidation
     @PostMapping("/login")
     public @NotNull ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
         LoginReq loginReq = baseReq.getPayloads().get(0);

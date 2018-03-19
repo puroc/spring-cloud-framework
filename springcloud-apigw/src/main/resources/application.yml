@@ -41,7 +41,7 @@ zuul:
     idm:
       path: /idm/**  #代理前缀idm
       serviceId: springcloud-idm
-#      stripPrefix: false #是否移除前缀代理前缀
+      stripPrefix: false #是否保留代理前缀
 
 ribbon:
   eureka:

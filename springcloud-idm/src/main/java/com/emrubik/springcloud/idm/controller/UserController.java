@@ -16,8 +16,10 @@ import com.emrubik.springcloud.idm.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ import java.util.List;
  * @since 2018-03-15
  */
 @Controller
+@Validated
 @RequestMapping("/user")
 public class UserController {
 
@@ -47,9 +50,8 @@ public class UserController {
 
     @IgnoreJwtValidation
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody BaseReq<LoginReq> baseReq) throws Exception {
+    public @NotNull ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
         LoginReq loginReq = baseReq.getPayloads().get(0);
-
         //验证用户合法性
         User user = userService.selectOne(new EntityWrapper<User>().eq("username", loginReq.getUsername()).eq("password", loginReq.getPassword()));
 
@@ -58,13 +60,12 @@ public class UserController {
         if (user == null) {
             resp.setResultCode(BaseResp.RESULT_FAILED);
             resp.setMessage(Constants.USER_NOT_EXIST);
-        }else{
+        } else {
             LoginResp loginResp = new LoginResp();
             loginResp.setToken(jwtHelper.generateToken(new JwtInfo(user.getId() + "", user.getName())));
             resp.setPayLoad(loginResp);
         }
         return ResponseEntity.ok(resp);
-
     }
 
 }

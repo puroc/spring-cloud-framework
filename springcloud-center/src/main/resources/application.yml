@@ -7,8 +7,10 @@ server:
 
 eureka:
     client:
-        registerWithEureka: false  #false:不作为一个客户端注册到注册中心
-        fetchRegistry: false      #为true时，可以启动，但报异常：Cannot execute request on any known server
+      registerWithEureka: false  #false:不作为一个客户端注册到注册中心
+      fetchRegistry: false      #为true时，可以启动，但报异常：Cannot execute request on any known server
+    server:
+      enable-self-preservation: false
 info:
   app:
     name: "@project.name@"

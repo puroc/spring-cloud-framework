@@ -109,7 +109,7 @@ public class User extends Model<User> {
     public String toString() {
         return "User{" +
         ", id=" + id +
-        ", username=" + username +
+        ", userName=" + username +
         ", password=" + password +
         ", name=" + name +
         ", birthday=" + birthday +

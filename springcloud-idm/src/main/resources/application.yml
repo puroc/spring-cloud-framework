@@ -121,6 +121,9 @@ info:
     version: "@project.version@"
     spring-boot-version: "@project.parent.version@"
 
+jwt:
+  expire: 3600
+
 #redis-cache 相关
 #redis:
 #    pool:

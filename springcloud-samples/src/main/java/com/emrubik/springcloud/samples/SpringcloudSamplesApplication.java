@@ -1,14 +1,16 @@
 package com.emrubik.springcloud.samples;
 
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.emrubik.springcloud.api.annotation.EnableFeignApi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+@EnableFeignApi
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringcloudSamplesApplication {
 
 	public static void main(String[] args) {
-		SignatureAlgorithm alg = SignatureAlgorithm.RS256;
 		SpringApplication.run(SpringcloudSamplesApplication.class, args);
 	}
 }

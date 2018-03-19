@@ -42,12 +42,12 @@
         </dependency>
         <dependency>
             <groupId>com.emrubik</groupId>
-            <artifactId>springcloud-auth-common</artifactId>
+            <artifactId>springcloud-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.emrubik</groupId>
-            <artifactId>springcloud-api</artifactId>
+            <artifactId>springcloud-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

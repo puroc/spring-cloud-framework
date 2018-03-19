@@ -24,7 +24,7 @@ server:
 zuul:
   ignored-services: "*"
   sensitive-headers:
-  prefix: /api #为zuul设置一个公共的前缀
+  prefix: /api #为zuul设置一个公共前缀
 #  ratelimit: # 网关限流
 #    key-prefix: gate_rate
 #    enabled: true
@@ -39,13 +39,9 @@ zuul:
 #        - url
   routes:
     idm:
-      path: /idm/**
+      path: /idm/**  #代理前缀idm
       serviceId: springcloud-idm
-      stripPrefix: false
-    auth:
-      path: /auth/**
-      serviceId: springcloud-auth
-      stripPrefix: false
+#      stripPrefix: false #是否移除前缀代理前缀
 
 ribbon:
   eureka:
@@ -72,7 +68,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/token
+    startWith: /static,/user/login
 
 eureka:
     instance:
@@ -101,7 +97,6 @@ feign:
       enabled: true
 
 jwt:
-  token-header: Authorization
   expire: 3600
 
 info:

@@ -1,28 +1,16 @@
 package com.example.springcloud.apigw.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.emrubik.springcloud.api.idm.IUserService;
-import com.emrubik.springcloud.auth.common.domain.JwtInfo;
-import com.emrubik.springcloud.auth.common.msg.TokenForbiddenResponse;
-import com.emrubik.springcloud.auth.common.util.BaseContextHandler;
-import com.emrubik.springcloud.auth.common.util.JwtHelper;
-import com.emrubik.springcloud.domain.authority.PermissionInfo;
+import com.emrubik.springcloud.common.util.BaseContextHandler;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -36,10 +24,6 @@ public class AdminAccessFilter extends ZuulFilter {
 
     @Value("${zuul.prefix}")
     private String zuulPrefix;
-
-    @Autowired
-    private JwtHelper jwtHelper;
-
 
     @Override
     public String filterType() {
@@ -86,74 +70,74 @@ public class AdminAccessFilter extends ZuulFilter {
         return null;
     }
 
-    /**
-     * 获取目标权限资源
-     *
-     * @param requestUri
-     * @param method
-     * @param serviceInfo
-     * @return
-     */
-    private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
-        return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
-            @Override
-            public boolean test(PermissionInfo permissionInfo) {
-                String url = permissionInfo.getUri();
-                String uri = url.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
-                String regEx = "^" + uri + "$";
-                return (Pattern.compile(regEx).matcher(requestUri).find() || requestUri.startsWith(url + "/"))
-                        && method.equals(permissionInfo.getMethod());
-            }
-        });
-    }
-
-    private void setCurrentUserInfo(RequestContext ctx, JwtInfo user, PermissionInfo pm) {
-        ctx.addZuulRequestHeader("userId", user.getUserId());
-//        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getUsername()));
-
-    }
-
-    /**
-     * 返回session中的用户信息
-     *
-     * @param request
-     * @param ctx
-     * @return
-     */
-    private JwtInfo getJWTUser(HttpServletRequest request, RequestContext ctx) throws Exception {
-        String authToken = request.getHeader(jwtHelper.getTokenHeader());
-        if (StringUtils.isBlank(authToken)) {
-            authToken = request.getParameter("token");
-        }
-        ctx.addZuulRequestHeader(jwtHelper.getTokenHeader(), authToken);
-        BaseContextHandler.setToken(authToken);
-        return jwtHelper.getInfoFromToken(authToken);
-    }
-
-
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, JwtInfo user) {
-        List<PermissionInfo> permissionInfos = userService.getPermissionByUserId(user.getUserId());
-        PermissionInfo current = null;
-        for (PermissionInfo info : permissions) {
-            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
-                @Override
-                public boolean test(PermissionInfo permissionInfo) {
-                    return permissionInfo.getCode().equals(info.getCode());
-                }
-            });
-            if (anyMatch) {
-                current = info;
-                break;
-            }
-        }
-        if (current == null) {
-            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
-        } else {
-            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
-                setCurrentUserInfo(ctx, user, current);
-            }
-        }
-    }
+//    /**
+//     * 获取目标权限资源
+//     *
+//     * @param requestUri
+//     * @param method
+//     * @param serviceInfo
+//     * @return
+//     */
+//    private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
+//        return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
+//            @Override
+//            public boolean test(PermissionInfo permissionInfo) {
+//                String url = permissionInfo.getUri();
+//                String uri = url.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
+//                String regEx = "^" + uri + "$";
+//                return (Pattern.compile(regEx).matcher(requestUri).find() || requestUri.startsWith(url + "/"))
+//                        && method.equals(permissionInfo.getMethod());
+//            }
+//        });
+//    }
+//
+//    private void setCurrentUserInfo(RequestContext ctx, JwtInfo user, PermissionInfo pm) {
+//        ctx.addZuulRequestHeader("userId", user.getUserId());
+////        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getUserName()));
+//
+//    }
+//
+//    /**
+//     * 返回session中的用户信息
+//     *
+//     * @param request
+//     * @param ctx
+//     * @return
+//     */
+//    private JwtInfo getJWTUser(HttpServletRequest request, RequestContext ctx) throws Exception {
+//        String authToken = request.getHeader(jwtHelper.getTokenHeader());
+//        if (StringUtils.isBlank(authToken)) {
+//            authToken = request.getParameter("token");
+//        }
+//        ctx.addZuulRequestHeader(jwtHelper.getTokenHeader(), authToken);
+//        BaseContextHandler.setToken(authToken);
+//        return jwtHelper.getInfoFromToken(authToken);
+//    }
+//
+//
+//    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, JwtInfo user) {
+//        List<PermissionInfo> permissionInfos = userService.getPermissionByUserId(user.getUserId());
+//        PermissionInfo current = null;
+//        for (PermissionInfo info : permissions) {
+//            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
+//                @Override
+//                public boolean test(PermissionInfo permissionInfo) {
+//                    return permissionInfo.getCode().equals(info.getCode());
+//                }
+//            });
+//            if (anyMatch) {
+//                current = info;
+//                break;
+//            }
+//        }
+//        if (current == null) {
+//            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
+//        } else {
+//            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
+//                setCurrentUserInfo(ctx, user, current);
+//            }
+//        }
+//    }
 
 
     /**

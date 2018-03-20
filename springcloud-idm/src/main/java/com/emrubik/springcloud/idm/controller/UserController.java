@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,20 +79,24 @@ public class UserController {
         loginResp.setToken(jwtToken);
         resp.setPayLoad(loginResp);
 
-
-
         //存储token和用户的关系
+        insertOrUpdateUserTokenBind(user, jwtToken);
+
+        return ResponseEntity.ok(resp);
+    }
+
+    private void insertOrUpdateUserTokenBind(User user, String jwtToken) {
         UserTokenBind userToken = userTokenBindService.selectOne(new EntityWrapper<UserTokenBind>().eq("user_id", user.getId()));
         UserTokenBind userTokenBind = new UserTokenBind();
+        //设置了主键属性，mybatis的insertOrUpdate方法会先根据ID进行更新，如果没有更新到数据，则插入数据
         if(userToken != null){
             userTokenBind.setId(userToken.getId());
         }
         userTokenBind.setToken(jwtToken);
         userTokenBind.setUserId(user.getId());
         userTokenBind.setExpire(Integer.parseInt(jwtHelper.getExpire()));
+        userTokenBind.setTimestamp(new Date());
         userTokenBindService.insertOrUpdate(userTokenBind);
-
-        return ResponseEntity.ok(resp);
     }
 
     private JwtInfo createJwtInfo(User user) {

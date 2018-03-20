@@ -8,7 +8,7 @@
     </appender>
 
     <!--输出sql语句-->
-    <logger name="com.example.springboot.mybatis.plus.mapper" level="debug" />
+    <logger name="com.emrubik.springcloud.dao.mapper" level="debug" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />

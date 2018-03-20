@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -23,6 +24,7 @@ public class UserTokenBind extends Model<UserTokenBind> {
     private Integer userId;
     private String token;
     private Integer expire;
+    private Date timestamp;
 
 
     public Integer getId() {
@@ -57,6 +59,14 @@ public class UserTokenBind extends Model<UserTokenBind> {
         this.expire = expire;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -69,6 +79,7 @@ public class UserTokenBind extends Model<UserTokenBind> {
         ", userId=" + userId +
         ", token=" + token +
         ", expire=" + expire +
+        ", timestamp=" + timestamp +
         "}";
     }
 }

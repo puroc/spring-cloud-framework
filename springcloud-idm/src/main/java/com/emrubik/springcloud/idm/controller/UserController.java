@@ -1,9 +1,9 @@
 package com.emrubik.springcloud.idm.controller;
 
 
-import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.emrubik.springcloud.common.annotation.IgnoreJwtValidation;
+import com.emrubik.springcloud.common.util.BaseContextHandler;
 import com.emrubik.springcloud.common.util.JwtHelper;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.dao.entity.UserTokenBind;
@@ -11,6 +11,7 @@ import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
 import com.emrubik.springcloud.domain.to.payload.login.LoginReq;
 import com.emrubik.springcloud.domain.to.payload.login.LoginResp;
+import com.emrubik.springcloud.domain.to.payload.user.GetUserInfoResp;
 import com.emrubik.springcloud.domain.vo.JwtInfo;
 import com.emrubik.springcloud.idm.constant.Constants;
 import com.emrubik.springcloud.idm.service.IUserService;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -48,11 +48,15 @@ public class UserController {
     @Autowired
     private JwtHelper jwtHelper;
 
-    @GetMapping("/")
+    @GetMapping("/info")
     @ResponseBody
-    public User getUserInfo() {
-        List<User> list = userService.selectList(Condition.create().eq("name", "pud"));
-        return list.get(0);
+    public @NotNull ResponseEntity getUserInfo() {
+        User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
+        BaseResp<GetUserInfoResp> resp = new BaseResp<GetUserInfoResp>();
+        GetUserInfoResp getUserInfoResp = new GetUserInfoResp();
+        getUserInfoResp.setUser(user);
+        resp.setPayLoad(getUserInfoResp);
+        return ResponseEntity.ok(resp);
     }
 
     @IgnoreJwtValidation
@@ -89,7 +93,7 @@ public class UserController {
         UserTokenBind userToken = userTokenBindService.selectOne(new EntityWrapper<UserTokenBind>().eq("user_id", user.getId()));
         UserTokenBind userTokenBind = new UserTokenBind();
         //设置了主键属性，mybatis的insertOrUpdate方法会先根据ID进行更新，如果没有更新到数据，则插入数据
-        if(userToken != null){
+        if (userToken != null) {
             userTokenBind.setId(userToken.getId());
         }
         userTokenBind.setToken(jwtToken);

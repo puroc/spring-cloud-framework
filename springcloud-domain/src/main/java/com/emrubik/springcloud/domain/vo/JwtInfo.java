@@ -9,10 +9,7 @@ public class JwtInfo {
 
     private String userId;
 
-    public JwtInfo(String userId, String userName) {
-        this.userName = userName;
-        this.userId = userId;
-    }
+    private Long currentTime;
 
     @Override
     public boolean equals(Object o) {

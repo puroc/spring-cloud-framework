@@ -1,10 +1,9 @@
-package entity;
+package com.emrubik.springcloud.dao.entity;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -15,14 +14,15 @@ import java.io.Serializable;
  * @author puroc123
  * @since 2018-03-20
  */
-public class UserRoleBind extends Model<UserRoleBind> {
+public class UserTokenBind extends Model<UserTokenBind> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer userId;
-    private Integer roleId;
+    private String token;
+    private Integer expire;
 
 
     public Integer getId() {
@@ -41,12 +41,20 @@ public class UserRoleBind extends Model<UserRoleBind> {
         this.userId = userId;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public String getToken() {
+        return token;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getExpire() {
+        return expire;
+    }
+
+    public void setExpire(Integer expire) {
+        this.expire = expire;
     }
 
     @Override
@@ -56,10 +64,11 @@ public class UserRoleBind extends Model<UserRoleBind> {
 
     @Override
     public String toString() {
-        return "UserRoleBind{" +
+        return "UserTokenBind{" +
         ", id=" + id +
         ", userId=" + userId +
-        ", roleId=" + roleId +
+        ", token=" + token +
+        ", expire=" + expire +
         "}";
     }
 }

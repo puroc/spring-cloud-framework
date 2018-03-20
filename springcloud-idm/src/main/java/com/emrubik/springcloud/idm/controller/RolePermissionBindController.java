@@ -1,4 +1,4 @@
-package controller;
+package com.emrubik.springcloud.idm.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-15
+ * @since 2018-03-20
  */
 @Controller
-@RequestMapping("/rolePermission")
-public class RolePermissionController {
+@RequestMapping("/rolePermissionBind")
+public class RolePermissionBindController {
 
 }
 

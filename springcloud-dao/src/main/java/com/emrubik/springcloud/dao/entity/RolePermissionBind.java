@@ -2,6 +2,8 @@ package com.emrubik.springcloud.dao.entity;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
@@ -11,12 +13,13 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-15
+ * @since 2018-03-20
  */
-public class RolePermission extends Model<RolePermission> {
+public class RolePermissionBind extends Model<RolePermissionBind> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer roleId;
     private Integer permissionId;
@@ -53,7 +56,7 @@ public class RolePermission extends Model<RolePermission> {
 
     @Override
     public String toString() {
-        return "RolePermission{" +
+        return "RolePermissionBind{" +
         ", id=" + id +
         ", roleId=" + roleId +
         ", permissionId=" + permissionId +

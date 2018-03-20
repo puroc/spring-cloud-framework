@@ -1,8 +1,9 @@
 package com.emrubik.springcloud.dao.entity;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -11,12 +12,13 @@ import java.io.Serializable;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-15
+ * @since 2018-03-20
  */
 public class Org extends Model<Org> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String name;
     private Integer parentId;

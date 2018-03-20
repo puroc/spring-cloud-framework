@@ -1,7 +1,7 @@
 package com.emrubik.springcloud.dao.mapper;
 
-import com.emrubik.springcloud.dao.entity.UserRoleBind;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.emrubik.springcloud.dao.entity.UserRoleBind;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-15
+ * @since 2018-03-20
  */
 public interface UserRoleBindMapper extends BaseMapper<UserRoleBind> {
 

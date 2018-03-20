@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author puroc123
- * @since 2018-03-15
+ * @since 2018-03-20
  */
 @Service
 public class UserRoleBindServiceImpl extends ServiceImpl<UserRoleBindMapper, UserRoleBind> implements IUserRoleBindService {

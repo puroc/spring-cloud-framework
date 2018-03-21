@@ -1,11 +1,12 @@
 package com.emrubik.springcloud.dao.entity;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +31,16 @@ public class User extends Model<User> {
     private String sex;
     private Integer orgId;
 
+    @TableField(exist = false)
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public Integer getId() {
         return id;

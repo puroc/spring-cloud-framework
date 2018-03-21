@@ -13,4 +13,6 @@ import com.emrubik.springcloud.dao.entity.User;
  */
 public interface IUserService extends IService<User> {
 
+    User selectUserAndRoles(String userId);
+
 }

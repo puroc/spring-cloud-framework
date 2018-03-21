@@ -43,7 +43,7 @@ public class Generator {
     }
 
     public static void main(String[] args) {
-        String packageName = "";
+        String packageName = "com.emrubik.springcloud.dao";
         generateByTables(packageName, "user", "role","org","permission","user_role_bind","role_permission_bind","user_token_bind");
     }
 }

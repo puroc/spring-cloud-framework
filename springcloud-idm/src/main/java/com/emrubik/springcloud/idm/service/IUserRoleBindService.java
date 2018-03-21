@@ -13,4 +13,6 @@ import com.emrubik.springcloud.dao.entity.UserRoleBind;
  */
 public interface IUserRoleBindService extends IService<UserRoleBind> {
 
+
+
 }

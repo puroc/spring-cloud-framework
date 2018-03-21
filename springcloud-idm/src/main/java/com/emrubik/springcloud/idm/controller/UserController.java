@@ -48,17 +48,6 @@ public class UserController {
     @Autowired
     private JwtHelper jwtHelper;
 
-    @GetMapping("/info")
-    @ResponseBody
-    public @NotNull ResponseEntity getUserInfo() {
-        User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
-        BaseResp<GetUserInfoResp> resp = new BaseResp<GetUserInfoResp>();
-        GetUserInfoResp getUserInfoResp = new GetUserInfoResp();
-        getUserInfoResp.setUser(user);
-        resp.setPayLoad(getUserInfoResp);
-        return ResponseEntity.ok(resp);
-    }
-
     @IgnoreJwtValidation
     @PostMapping("/login")
     public @NotNull
@@ -86,6 +75,18 @@ public class UserController {
         //存储token和用户的关系
         insertOrUpdateUserTokenBind(user, jwtToken);
 
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/info")
+    @ResponseBody
+    public @NotNull ResponseEntity getUserInfo() {
+//        User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
+        User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
+        BaseResp<GetUserInfoResp> resp = new BaseResp<GetUserInfoResp>();
+        GetUserInfoResp getUserInfoResp = new GetUserInfoResp();
+        getUserInfoResp.setUser(user);
+        resp.setPayLoad(getUserInfoResp);
         return ResponseEntity.ok(resp);
     }
 

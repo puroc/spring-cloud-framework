@@ -13,4 +13,6 @@ import com.emrubik.springcloud.dao.entity.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    User selectUserAndRoles(String userId);
+
 }

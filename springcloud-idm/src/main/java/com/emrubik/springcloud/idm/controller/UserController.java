@@ -66,10 +66,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
         }
 
-        //生成token
         LoginResp loginResp = new LoginResp();
+
+        //生成token
         String jwtToken = jwtHelper.generateToken(createJwtInfo(user));
         loginResp.setToken(jwtToken);
+
         resp.setPayLoad(loginResp);
 
         //存储token和用户的关系
@@ -81,13 +83,20 @@ public class UserController {
     @GetMapping("/info")
     @ResponseBody
     public @NotNull ResponseEntity getUserInfo() {
-//        User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
         User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
         BaseResp<GetUserInfoResp> resp = new BaseResp<GetUserInfoResp>();
         GetUserInfoResp getUserInfoResp = new GetUserInfoResp();
         getUserInfoResp.setUser(user);
         resp.setPayLoad(getUserInfoResp);
         return ResponseEntity.ok(resp);
+    }
+
+
+    @GetMapping("/logout")
+    public @NotNull
+    ResponseEntity logout() throws Exception {
+        boolean result = userTokenBindService.delete(new EntityWrapper<UserTokenBind>().eq("user_id", BaseContextHandler.getUserId()));
+        return ResponseEntity.ok().build();
     }
 
     private void insertOrUpdateUserTokenBind(User user, String jwtToken) {

@@ -2,6 +2,7 @@ package com.emrubik.springcloud.common.util;
 
 import com.auth0.jwt.JWTSigner;
 import com.auth0.jwt.JWTVerifier;
+import com.emrubik.springcloud.common.exception.JwtExpireException;
 import com.emrubik.springcloud.domain.vo.JwtInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -60,6 +61,8 @@ public class JwtHelper {
                     String json = (String) claims.get(PAYLOAD);
                     ObjectMapper objectMapper = new ObjectMapper();
                     return objectMapper.readValue(json, classT);
+                }else{
+                    throw new JwtExpireException("jwt token过期");
                 }
             }
             return null;

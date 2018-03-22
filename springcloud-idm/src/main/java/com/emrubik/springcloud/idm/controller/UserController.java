@@ -11,7 +11,6 @@ import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
 import com.emrubik.springcloud.domain.to.payload.login.LoginReq;
 import com.emrubik.springcloud.domain.to.payload.login.LoginResp;
-import com.emrubik.springcloud.domain.to.payload.user.GetUserInfoResp;
 import com.emrubik.springcloud.domain.vo.JwtInfo;
 import com.emrubik.springcloud.idm.constant.Constants;
 import com.emrubik.springcloud.idm.service.IUserService;
@@ -84,10 +83,8 @@ public class UserController {
     @ResponseBody
     public @NotNull ResponseEntity getUserInfo() {
         User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
-        BaseResp<GetUserInfoResp> resp = new BaseResp<GetUserInfoResp>();
-        GetUserInfoResp getUserInfoResp = new GetUserInfoResp();
-        getUserInfoResp.setUser(user);
-        resp.setPayLoad(getUserInfoResp);
+        BaseResp<User> resp = new BaseResp<User>();
+        resp.setPayLoad(user);
         return ResponseEntity.ok(resp);
     }
 

@@ -4,7 +4,6 @@ package com.emrubik.springcloud.idm.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
-import com.emrubik.springcloud.domain.to.payload.org.GetOrgInfoResp;
 import com.emrubik.springcloud.idm.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +34,8 @@ public class OrgController {
     public @NotNull
     ResponseEntity getUserListByOrgId(@PathVariable String orgId) throws Exception {
         List<User> users = userService.selectList(new EntityWrapper<User>().eq("org_id", orgId));
-        BaseResp<GetOrgInfoResp> baseResp = new BaseResp<GetOrgInfoResp>();
-        GetOrgInfoResp getOrgInfoResp = new GetOrgInfoResp();
-        getOrgInfoResp.setUsers(users);
-        baseResp.setPayLoad(getOrgInfoResp);
+        BaseResp<User> baseResp = new BaseResp<User>();
+        baseResp.setPayloads(users);
         return ResponseEntity.ok(baseResp);
     }
 

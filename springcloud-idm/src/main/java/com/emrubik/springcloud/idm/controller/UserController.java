@@ -16,7 +16,6 @@ import com.emrubik.springcloud.idm.constant.Constants;
 import com.emrubik.springcloud.idm.service.IUserService;
 import com.emrubik.springcloud.idm.service.IUserTokenBindService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -62,7 +61,7 @@ public class UserController {
         if (user == null) {
             resp.setResultCode(BaseResp.RESULT_FAILED);
             resp.setMessage(Constants.USER_NOT_EXIST);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+            return ResponseEntity.ok(resp);
         }
 
         LoginResp loginResp = new LoginResp();
@@ -80,13 +79,39 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    @ResponseBody
-    public @NotNull ResponseEntity getUserInfo() {
+    public @NotNull
+    ResponseEntity getUserInfo() {
         User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);
         return ResponseEntity.ok(resp);
     }
+
+    @DeleteMapping("/{username}")
+    public @NotNull
+    ResponseEntity deleteUser(@PathVariable String username) {
+        boolean result = userService.delete(new EntityWrapper<User>().eq("username",username));
+        BaseResp resp = new BaseResp();
+        if (!result) {
+            resp.setMessage("username:" + username + "的用户不存在，删除失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/{username}")
+    public @NotNull
+    ResponseEntity updateUser(@PathVariable String username,@RequestBody BaseReq<User> baseReq) {
+        User user = baseReq.getPayloads().get(0);
+        boolean result = userService.update(user,new EntityWrapper<User>().eq("username",username));
+        BaseResp resp = new BaseResp();
+        if (!result) {
+            resp.setMessage("username:" + username + "的用户不存在，修改失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
+
 
 
     @GetMapping("/logout")

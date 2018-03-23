@@ -3,6 +3,8 @@ package com.emrubik.springcloud.common.util;
 import com.auth0.jwt.JWTSigner;
 import com.auth0.jwt.JWTVerifier;
 import com.emrubik.springcloud.common.exception.JwtExpireException;
+import com.emrubik.springcloud.common.exception.JwtParseException;
+import com.emrubik.springcloud.common.exception.JwtSignException;
 import com.emrubik.springcloud.domain.vo.JwtInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -35,7 +37,7 @@ public class JwtHelper {
     }
 
     //加密，传入一个对象和有效期
-    private static <T> String sign(T object, long maxAge) {
+    private static <T> String sign(T object, long maxAge) throws JwtSignException {
         try {
             final JWTSigner signer = new JWTSigner(SECRET);
             final Map<String, Object> claims = new HashMap<String, Object>();
@@ -44,30 +46,32 @@ public class JwtHelper {
             claims.put(PAYLOAD, jsonString);
             claims.put(EXP, System.currentTimeMillis() + maxAge);
             return signer.sign(claims);
-        } catch (Exception e) {
-            return null;
+        } catch (Throwable t) {
+            throw new JwtSignException("jwt token加密失败", t);
         }
     }
 
     //解密，传入一个加密后的token字符串和解密后的类型
-    private static <T> T unsign(String jwt, Class<T> classT) {
+    private static <T> T unsign(String jwt, Class<T> classT) throws JwtExpireException, JwtParseException {
         final JWTVerifier verifier = new JWTVerifier(SECRET);
         try {
             final Map<String, Object> claims = verifier.verify(jwt);
+            String json = null;
             if (claims.containsKey(EXP) && claims.containsKey(PAYLOAD)) {
                 long exp = (Long) claims.get(EXP);
                 long currentTimeMillis = System.currentTimeMillis();
                 if (exp > currentTimeMillis) {
-                    String json = (String) claims.get(PAYLOAD);
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    return objectMapper.readValue(json, classT);
-                }else{
+                    json = (String) claims.get(PAYLOAD);
+                } else {
                     throw new JwtExpireException("jwt token过期");
                 }
             }
-            return null;
-        } catch (Exception e) {
-            return null;
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, classT);
+        } catch (JwtExpireException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new JwtParseException("jwt token解析失败", t);
         }
     }
 

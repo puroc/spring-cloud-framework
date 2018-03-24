@@ -90,7 +90,7 @@ public class UserController {
     @DeleteMapping("/{username}")
     public @NotNull
     ResponseEntity deleteUser(@PathVariable String username) {
-        boolean result = userService.delete(new EntityWrapper<User>().eq("username",username));
+        boolean result = userService.delete(new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
         if (!result) {
             resp.setMessage("username:" + username + "的用户不存在，删除失败");
@@ -101,9 +101,9 @@ public class UserController {
 
     @PutMapping("/{username}")
     public @NotNull
-    ResponseEntity updateUser(@PathVariable String username,@RequestBody BaseReq<User> baseReq) {
+    ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
-        boolean result = userService.update(user,new EntityWrapper<User>().eq("username",username));
+        boolean result = userService.update(user, new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
         if (!result) {
             resp.setMessage("username:" + username + "的用户不存在，修改失败");
@@ -112,6 +112,18 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
+    @PostMapping
+    public @NotNull
+    ResponseEntity addUser(@RequestBody BaseReq<User> baseReq) {
+        User user = baseReq.getPayloads().get(0);
+        boolean result = userService.insert(user);
+        BaseResp resp = new BaseResp();
+        if (!result) {
+            resp.setMessage("username:" + user.getUsername() + " 添加用户失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
 
 
     @GetMapping("/logout")

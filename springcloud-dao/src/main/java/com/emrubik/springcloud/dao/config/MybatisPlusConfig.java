@@ -1,6 +1,5 @@
 package com.emrubik.springcloud.dao.config;
 
-import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -35,6 +34,13 @@ public class MybatisPlusConfig {
 //        PaginationInterceptor interceptor = new PaginationInterceptor();
 //        return interceptor;
 //    }
+
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        PaginationInterceptor page = new PaginationInterceptor();
+        page.setDialectType("mysql");
+        return page;
+    }
 
     /**
      * 乐观锁插件

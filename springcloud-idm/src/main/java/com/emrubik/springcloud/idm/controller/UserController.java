@@ -67,15 +67,19 @@ public class UserController {
         LoginResp loginResp = new LoginResp();
 
         //生成token
-        String jwtToken = jwtHelper.generateToken(createJwtInfo(user));
+        String jwtToken = createToken(user);
         loginResp.setToken(jwtToken);
-
         resp.setPayLoad(loginResp);
+        return ResponseEntity.ok(resp);
+    }
+
+    private String createToken(User user) throws Exception {
+        //生成token
+        String jwtToken = jwtHelper.generateToken(createJwtInfo(user));
 
         //存储token和用户的关系
         insertOrUpdateUserTokenBind(user, jwtToken);
-
-        return ResponseEntity.ok(resp);
+        return jwtToken;
     }
 
     @GetMapping("/info")
@@ -157,6 +161,19 @@ public class UserController {
 
     private User validateUser(LoginReq loginReq) {
         return userService.selectOne(new EntityWrapper<User>().eq("username", loginReq.getUsername()).eq("password", loginReq.getPassword()));
+    }
+
+    @GetMapping("token")
+    public @NotNull
+    ResponseEntity refreshToken() throws Exception {
+        User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
+        //生成token
+        String jwtToken = createToken(user);
+        LoginResp loginResp = new LoginResp();
+        loginResp.setToken(jwtToken);
+        BaseResp<LoginResp> resp = new BaseResp<LoginResp>();
+        resp.setPayLoad(loginResp);
+        return ResponseEntity.ok(resp);
     }
 
 }

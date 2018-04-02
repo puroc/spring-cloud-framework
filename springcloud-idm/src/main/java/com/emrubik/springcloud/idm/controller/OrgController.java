@@ -9,6 +9,7 @@ import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
 import com.emrubik.springcloud.domain.to.base.PageResp;
+import com.emrubik.springcloud.domain.to.org.AddOrgReq;
 import com.emrubik.springcloud.domain.to.org.OrgTree;
 import com.emrubik.springcloud.idm.service.IOrgService;
 import com.emrubik.springcloud.idm.service.IUserService;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +34,7 @@ import java.util.List;
  * @since 2018-03-20
  */
 @Controller
+@Validated
 @RequestMapping("/idm/org")
 public class OrgController {
 
@@ -98,6 +101,7 @@ public class OrgController {
         for (Org org : orgList) {
             String id = org.getId() + "";
             OrgTree node = new OrgTree();
+            node.setId(org.getId());
             node.setLabel(org.getName());
             map.put(id, node);
         }
@@ -116,6 +120,21 @@ public class OrgController {
         }
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
         baseResp.setPayLoad(orgTree);
+        return ResponseEntity.ok(baseResp);
+    }
+
+    @PostMapping("{orgId}")
+    public @NotNull ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq,@PathVariable String orgId){
+        AddOrgReq addOrgReq = baseReq.getPayloads().get(0);
+        Org org= new Org();
+        org.setName(addOrgReq.getLabel());
+        org.setParentId(Integer.parseInt(orgId));
+        boolean result = orgService.insert(org);
+        BaseResp baseResp = new BaseResp();
+        if(!result){
+            baseResp.setResultCode(BaseResp.RESULT_FAILED);
+            baseResp.setMessage("机构"+addOrgReq.getLabel()+"插入失败");
+        }
         return ResponseEntity.ok(baseResp);
     }
 

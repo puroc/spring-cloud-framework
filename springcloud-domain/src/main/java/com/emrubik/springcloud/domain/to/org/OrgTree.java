@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class OrgTree {
 
+    private int id;
     private String label;
     private List<OrgTree> children = new ArrayList<OrgTree>();
 }

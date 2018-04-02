@@ -4,10 +4,13 @@ package com.emrubik.springcloud.idm.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.emrubik.springcloud.dao.entity.Org;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
 import com.emrubik.springcloud.domain.to.base.PageResp;
+import com.emrubik.springcloud.domain.to.org.OrgTree;
+import com.emrubik.springcloud.idm.service.IOrgService;
 import com.emrubik.springcloud.idm.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,6 +37,9 @@ public class OrgController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IOrgService orgService;
 
     @GetMapping("/{orgId}/users")
     public @NotNull
@@ -79,6 +86,37 @@ public class OrgController {
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
         return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("{orgId}/tree")
+    public @NotNull
+    ResponseEntity getOrgTree() {
+        List<Org> orgList = orgService.selectList(new EntityWrapper<Org>());
+        HashMap<String, OrgTree> map = new HashMap<String, OrgTree>();
+        OrgTree orgTree = null;
+        String rootId = null;
+        for (Org org : orgList) {
+            String id = org.getId() + "";
+            OrgTree node = new OrgTree();
+            node.setLabel(org.getName());
+            map.put(id, node);
+        }
+        for (Org org : orgList) {
+            String id = org.getId() + "";
+            String parentId = org.getParentId() + "";
+            if ("0".equals(parentId)) {
+                rootId = id;
+            }
+            if (map.containsKey(parentId)) {
+                map.get(parentId).getChildren().add(map.get(id));
+            }
+        }
+        if (!StringUtils.isEmpty(rootId)) {
+            orgTree = map.get(rootId);
+        }
+        BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
+        baseResp.setPayLoad(orgTree);
+        return ResponseEntity.ok(baseResp);
     }
 
 

@@ -138,6 +138,22 @@ public class OrgController {
         return ResponseEntity.ok(baseResp);
     }
 
+    @DeleteMapping("{orgId}")
+    public @NotNull ResponseEntity deleteOrg(@PathVariable String orgId){
+        BaseResp baseResp = new BaseResp();
+        List<Org> sonOrgList = orgService.selectList(new EntityWrapper<Org>().eq("parent_id", orgId));
+        if(!sonOrgList.isEmpty()){
+            baseResp.setResultCode(BaseResp.EXIST_SON_ORG);
+            baseResp.setMessage("该机构拥有下级机构，不允许删除");
+            return ResponseEntity.ok(baseResp);
+        }
+        boolean result = orgService.delete(new EntityWrapper<Org>().eq("id", orgId));
+        if(!result){
+            baseResp.setResultCode(BaseResp.RESULT_FAILED);
+            baseResp.setMessage("删除机构："+orgId+"失败");
+        }
+        return ResponseEntity.ok(baseResp);
+    }
 
 }
 

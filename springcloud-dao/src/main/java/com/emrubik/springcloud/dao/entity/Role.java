@@ -25,7 +25,18 @@ public class Role extends Model<Role> {
     private String name;
 
     @TableField(exist = false)
+    private Integer orgId;
+
+    @TableField(exist = false)
     private List<Permission> permissions;
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
 
     public List<Permission> getPermissions() {
         return permissions;

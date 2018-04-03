@@ -14,6 +14,7 @@ import com.emrubik.springcloud.domain.to.org.OrgTree;
 import com.emrubik.springcloud.idm.service.IOrgService;
 import com.emrubik.springcloud.idm.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -93,11 +94,10 @@ public class OrgController {
 
     @GetMapping("{orgId}/tree")
     public @NotNull
-    ResponseEntity getOrgTree() {
+    ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
         List<Org> orgList = orgService.selectList(new EntityWrapper<Org>());
         HashMap<String, OrgTree> map = new HashMap<String, OrgTree>();
         OrgTree orgTree = null;
-        String rootId = null;
         for (Org org : orgList) {
             String id = org.getId() + "";
             OrgTree node = new OrgTree();
@@ -108,49 +108,46 @@ public class OrgController {
         for (Org org : orgList) {
             String id = org.getId() + "";
             String parentId = org.getParentId() + "";
-            if ("0".equals(parentId)) {
-                rootId = id;
-            }
             if (map.containsKey(parentId)) {
                 map.get(parentId).getChildren().add(map.get(id));
             }
         }
-        if (!StringUtils.isEmpty(rootId)) {
-            orgTree = map.get(rootId);
-        }
+        orgTree = map.get(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
         baseResp.setPayLoad(orgTree);
         return ResponseEntity.ok(baseResp);
     }
 
     @PostMapping("{orgId}")
-    public @NotNull ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq,@PathVariable String orgId){
+    public @NotNull
+    ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq, @PathVariable String orgId) {
         AddOrgReq addOrgReq = baseReq.getPayloads().get(0);
-        Org org= new Org();
+        Org org = new Org();
         org.setName(addOrgReq.getLabel());
         org.setParentId(Integer.parseInt(orgId));
         boolean result = orgService.insert(org);
         BaseResp baseResp = new BaseResp();
-        if(!result){
+        if (!result) {
             baseResp.setResultCode(BaseResp.RESULT_FAILED);
-            baseResp.setMessage("机构"+addOrgReq.getLabel()+"插入失败");
+            baseResp.setMessage("机构" + addOrgReq.getLabel() + "插入失败");
         }
         return ResponseEntity.ok(baseResp);
     }
 
     @DeleteMapping("{orgId}")
-    public @NotNull ResponseEntity deleteOrg(@PathVariable String orgId){
+    public @NotNull
+    ResponseEntity deleteOrg(@PathVariable String orgId) {
         BaseResp baseResp = new BaseResp();
         List<Org> sonOrgList = orgService.selectList(new EntityWrapper<Org>().eq("parent_id", orgId));
-        if(!sonOrgList.isEmpty()){
+        if (!sonOrgList.isEmpty()) {
             baseResp.setResultCode(BaseResp.EXIST_SON_ORG);
             baseResp.setMessage("该机构拥有下级机构，不允许删除");
             return ResponseEntity.ok(baseResp);
         }
         boolean result = orgService.delete(new EntityWrapper<Org>().eq("id", orgId));
-        if(!result){
+        if (!result) {
             baseResp.setResultCode(BaseResp.RESULT_FAILED);
-            baseResp.setMessage("删除机构："+orgId+"失败");
+            baseResp.setMessage("删除机构：" + orgId + "失败");
         }
         return ResponseEntity.ok(baseResp);
     }

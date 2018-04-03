@@ -22,7 +22,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -98,6 +100,25 @@ public class UserController {
         BaseResp resp = new BaseResp();
         if (!result) {
             resp.setMessage("username:" + username + "的用户不存在，删除失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
+
+    @DeleteMapping
+    public @NotNull
+    ResponseEntity
+    deleteUserList( @RequestBody BaseReq<User> baseReq) {
+        List<String> userIdList = new ArrayList<String>();
+        List<User> users = baseReq.getPayloads();
+        int size = users.size();
+        for (int i = 0; i < size; i++) {
+            userIdList.add(users.get(i).getId() + "");
+        }
+        BaseResp resp = new BaseResp();
+        boolean result = userService.deleteBatchIds(userIdList);
+        if (!result) {
+            resp.setMessage("删除失败,userIdList:" + userIdList);
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
         return ResponseEntity.ok(resp);

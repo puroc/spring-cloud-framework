@@ -73,25 +73,6 @@ public class OrgController {
         return ResponseEntity.ok(baseResp);
     }
 
-    @DeleteMapping("/{orgId}/users")
-    public @NotNull
-    ResponseEntity
-    deleteUserList(@PathVariable String orgId, @RequestBody BaseReq<User> baseReq) {
-        List<String> userIdList = new ArrayList<String>();
-        List<User> users = baseReq.getPayloads();
-        int size = users.size();
-        for (int i = 0; i < size; i++) {
-            userIdList.add(users.get(i).getId() + "");
-        }
-        BaseResp resp = new BaseResp();
-        boolean result = userService.deleteBatchIds(userIdList);
-        if (!result) {
-            resp.setMessage("删除失败,userIdList:" + userIdList);
-            resp.setResultCode(BaseResp.RESULT_FAILED);
-        }
-        return ResponseEntity.ok(resp);
-    }
-
     @GetMapping("{orgId}/tree")
     public @NotNull
     ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
@@ -115,6 +96,14 @@ public class OrgController {
         orgTree = map.get(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
         baseResp.setPayLoad(orgTree);
+        return ResponseEntity.ok(baseResp);
+    }
+
+    @GetMapping("{orgId}")
+    public @NotNull ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId){
+        Org org = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId));
+        BaseResp<Org> baseResp = new BaseResp<Org>();
+        baseResp.setPayLoad(org);
         return ResponseEntity.ok(baseResp);
     }
 

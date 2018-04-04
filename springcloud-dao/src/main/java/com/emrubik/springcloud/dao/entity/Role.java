@@ -25,17 +25,17 @@ public class Role extends Model<Role> {
     private String name;
 
     @TableField(exist = false)
-    private Integer orgId;
+    private Org org;
 
     @TableField(exist = false)
     private List<Permission> permissions;
 
-    public Integer getOrgId() {
-        return orgId;
+    public Org getOrg() {
+        return org;
     }
 
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
+    public void setOrg(Org org) {
+        this.org = org;
     }
 
     public List<Permission> getPermissions() {

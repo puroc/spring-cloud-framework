@@ -4,6 +4,7 @@ package com.emrubik.springcloud.idm.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.emrubik.springcloud.common.util.IdmHelper;
 import com.emrubik.springcloud.dao.entity.Org;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,7 +53,13 @@ public class OrgController {
                                       @RequestParam(required = false) String username,
                                       @RequestParam(required = false) String phone,
                                       @RequestParam(required = false) String email) throws Exception {
+        OrgTree orgTree = orgService.getOrgTree(orgId);
+        List<Integer> orgList = IdmHelper.getOrgList(new ArrayList<Integer>(),orgTree);
+        orgList.remove(orgId);
         Wrapper<User> wrapper = new EntityWrapper<User>().eq("org_id", orgId);
+        for (Integer sonOrgId : orgList) {
+            wrapper.or().eq("org_id", sonOrgId);
+        }
         if (!StringUtils.isEmpty(name)) {
             wrapper.eq("name", name);
         }
@@ -76,31 +82,15 @@ public class OrgController {
     @GetMapping("{orgId}/tree")
     public @NotNull
     ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
-        List<Org> orgList = orgService.selectList(new EntityWrapper<Org>());
-        HashMap<String, OrgTree> map = new HashMap<String, OrgTree>();
-        OrgTree orgTree = null;
-        for (Org org : orgList) {
-            String id = org.getId() + "";
-            OrgTree node = new OrgTree();
-            node.setId(org.getId());
-            node.setLabel(org.getName());
-            map.put(id, node);
-        }
-        for (Org org : orgList) {
-            String id = org.getId() + "";
-            String parentId = org.getParentId() + "";
-            if (map.containsKey(parentId)) {
-                map.get(parentId).getChildren().add(map.get(id));
-            }
-        }
-        orgTree = map.get(orgId);
+        OrgTree orgTree = orgService.getOrgTree(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
         baseResp.setPayLoad(orgTree);
         return ResponseEntity.ok(baseResp);
     }
 
     @GetMapping("{orgId}")
-    public @NotNull ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId){
+    public @NotNull
+    ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId) {
         Org org = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId));
         BaseResp<Org> baseResp = new BaseResp<Org>();
         baseResp.setPayLoad(org);

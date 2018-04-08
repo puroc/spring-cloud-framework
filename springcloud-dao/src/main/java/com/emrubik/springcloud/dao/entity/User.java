@@ -40,7 +40,7 @@ public class User extends Model<User> {
     @NotBlank
     private String password;
 
-    //必须中文，必填
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$",message = "姓名必须为中文")
     @NotBlank
     private String name;
 

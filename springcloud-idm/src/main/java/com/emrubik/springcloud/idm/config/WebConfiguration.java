@@ -58,6 +58,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return list;
     }
 
+    //集成fastjson和springboot
     @Bean
     public HttpMessageConverters fastJsonHttpMessageConverters(){
         //1. 需要定义一个converter转换消息的对象

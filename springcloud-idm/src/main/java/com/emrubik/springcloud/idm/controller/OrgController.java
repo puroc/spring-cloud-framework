@@ -53,9 +53,10 @@ public class OrgController {
                                       @RequestParam(required = false) String username,
                                       @RequestParam(required = false) String phone,
                                       @RequestParam(required = false) String email) throws Exception {
-        OrgTree orgTree = orgService.getOrgTree(orgId);
-        List<Integer> orgList = IdmHelper.getOrgList(new ArrayList<Integer>(),orgTree);
-        orgList.remove(orgId);
+
+        //根据当前机构ID查询出机构树，并转换为list
+        List<Integer> orgList = getOrgList(orgId);
+
         Wrapper<User> wrapper = new EntityWrapper<User>().eq("org_id", orgId);
         for (Integer sonOrgId : orgList) {
             wrapper.or().eq("org_id", sonOrgId);
@@ -72,11 +73,19 @@ public class OrgController {
         if (!StringUtils.isEmpty(phone)) {
             wrapper.eq("phone", phone);
         }
+
         Page<User> userPage = userService.selectPage(new Page<User>(current, size), wrapper);
         PageResp<User> baseResp = new PageResp<User>();
         baseResp.setPayloads(userPage.getRecords());
         baseResp.setTotalNum(userPage.getTotal());
         return ResponseEntity.ok(baseResp);
+    }
+
+    private List<Integer> getOrgList(@PathVariable String orgId) {
+        OrgTree orgTree = orgService.getOrgTree(orgId);
+        List<Integer> orgList = IdmHelper.getOrgList(new ArrayList<Integer>(),orgTree);
+        orgList.remove(orgId);
+        return orgList;
     }
 
     @GetMapping("{orgId}/tree")

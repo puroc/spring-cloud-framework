@@ -89,7 +89,7 @@ public class UserController {
     @GetMapping("/info")
     public @NotNull
     ResponseEntity getUserInfo() {
-        User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
+        User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);
         return ResponseEntity.ok(resp);

@@ -7,15 +7,16 @@
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="birthday" jdbcType="VARCHAR" property="birthday"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="sex" jdbcType="CHAR" property="sex"/>
         <result column="orgId" jdbcType="INTEGER" property="orgId"/>
+        <association property="org" javaType="com.emrubik.springcloud.dao.entity.Org">
+            <id property="id" column="orgId"/>
+            <result property="name" column="userOrgName"/>
+        </association>
         <collection property="roles" ofType="com.emrubik.springcloud.dao.entity.Role">
             <id column="roleId" jdbcType="INTEGER" property="id"/>
             <result column="roleName" jdbcType="VARCHAR" property="name"/>
-            <!--<result column="roleBindOrgId" jdbcType="INTEGER" property="orgId"/>-->
             <association property="org" javaType="com.emrubik.springcloud.dao.entity.Org">
                 <id property="id" column="roleBindOrgId"/>
                 <result property="name" column="roleBindOrgName"/>
@@ -31,17 +32,16 @@
         </collection>
     </resultMap>
 
-    <select id="selectUserAndRoles" resultMap="UserResultMap">
-	SELECT
+    <select id="getUserInfo" resultMap="UserResultMap">
+        SELECT
         `user`.id AS userid,
         `user`.username AS username,
         `user`.`password` AS `password`,
         `user`.`name` AS `name`,
-        `user`.birthday AS birthday,
         `user`.phone AS phone,
         `user`.email AS email,
-        `user`.sex AS sex,
         `user`.org_id AS orgId,
+		org2.`name` AS userOrgName,
         role.id AS roleId,
         role.`name` AS roleName,
         user_role_bind.org_id AS roleBindOrgId,
@@ -59,8 +59,26 @@
         LEFT OUTER JOIN role_permission_bind ON role_permission_bind.role_id = role.id
         LEFT OUTER JOIN permission ON permission.id = role_permission_bind.permission_id
         LEFT OUTER JOIN org ON user_role_bind.org_id = org.id
+				LEFT OUTER JOIN org org2 ON `user`.org_id = org2.id
     WHERE
         USER.id =#{userId}
+    </select>
+
+    <select id="getUserListByOrgId" resultMap="UserResultMap">
+        SELECT
+            `user`.id AS userid,
+            `user`.username AS username,
+            `user`.`password` AS `password`,
+            `user`.`name` AS `name`,
+            `user`.phone AS phone,
+            `user`.email AS email,
+            `user`.org_id AS orgId,
+            org.name AS userOrgName
+        FROM user
+        INNER JOIN org ON `user`.org_id=org.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 
 </mapper>

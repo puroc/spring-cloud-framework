@@ -1,7 +1,12 @@
 package com.emrubik.springcloud.dao.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.emrubik.springcloud.dao.entity.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +18,8 @@ import com.emrubik.springcloud.dao.entity.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
-    User selectUserAndRoles(String userId);
+    User getUserInfo(String userId);
+
+    List<User> getUserListByOrgId(Page<User> page, @Param("ew") Wrapper<User> wrapper);
 
 }

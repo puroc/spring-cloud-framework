@@ -45,6 +45,42 @@ public class OrgController {
     @Autowired
     private IOrgService orgService;
 
+//    @GetMapping("/{orgId}/users")
+//    public @NotNull
+//    ResponseEntity getUserListByOrgId(@PathVariable String orgId,
+//                                      @RequestParam int current, int size,
+//                                      @RequestParam(required = false) String name,
+//                                      @RequestParam(required = false) String username,
+//                                      @RequestParam(required = false) String phone,
+//                                      @RequestParam(required = false) String email) throws Exception {
+//
+//        //根据当前机构ID查询出机构树，并转换为list
+//        List<Integer> orgList = getOrgList(orgId);
+//
+//        Wrapper<User> wrapper = new EntityWrapper<User>().eq("org_id", orgId);
+//        for (Integer sonOrgId : orgList) {
+//            wrapper.or().eq("org_id", sonOrgId);
+//        }
+//        if (!StringUtils.isEmpty(name)) {
+//            wrapper.eq("name", name);
+//        }
+//        if (!StringUtils.isEmpty(username)) {
+//            wrapper.eq("username", username);
+//        }
+//        if (!StringUtils.isEmpty(email)) {
+//            wrapper.eq("email", email);
+//        }
+//        if (!StringUtils.isEmpty(phone)) {
+//            wrapper.eq("phone", phone);
+//        }
+//
+//        Page<User> userPage = userService.selectPage(new Page<User>(current, size), wrapper);
+//        PageResp<User> baseResp = new PageResp<User>();
+//        baseResp.setPayloads(userPage.getRecords());
+//        baseResp.setTotalNum(userPage.getTotal());
+//        return ResponseEntity.ok(baseResp);
+//    }
+
     @GetMapping("/{orgId}/users")
     public @NotNull
     ResponseEntity getUserListByOrgId(@PathVariable String orgId,
@@ -56,11 +92,7 @@ public class OrgController {
 
         //根据当前机构ID查询出机构树，并转换为list
         List<Integer> orgList = getOrgList(orgId);
-
-        Wrapper<User> wrapper = new EntityWrapper<User>().eq("org_id", orgId);
-        for (Integer sonOrgId : orgList) {
-            wrapper.or().eq("org_id", sonOrgId);
-        }
+        Wrapper<User> wrapper = new EntityWrapper<User>().in("org_id",orgList);
         if (!StringUtils.isEmpty(name)) {
             wrapper.eq("name", name);
         }
@@ -73,8 +105,7 @@ public class OrgController {
         if (!StringUtils.isEmpty(phone)) {
             wrapper.eq("phone", phone);
         }
-
-        Page<User> userPage = userService.selectPage(new Page<User>(current, size), wrapper);
+        Page<User> userPage = userService.getUserListByOrgId(new Page<User>(current, size), wrapper);
         PageResp<User> baseResp = new PageResp<User>();
         baseResp.setPayloads(userPage.getRecords());
         baseResp.setTotalNum(userPage.getTotal());
@@ -84,7 +115,6 @@ public class OrgController {
     private List<Integer> getOrgList(@PathVariable String orgId) {
         OrgTree orgTree = orgService.getOrgTree(orgId);
         List<Integer> orgList = IdmHelper.getOrgList(new ArrayList<Integer>(),orgTree);
-        orgList.remove(orgId);
         return orgList;
     }
 

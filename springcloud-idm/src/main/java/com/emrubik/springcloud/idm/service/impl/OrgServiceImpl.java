@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author puroc123
@@ -44,4 +44,5 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements IOrgS
         orgTree = map.get(orgId);
         return orgTree;
     }
+
 }

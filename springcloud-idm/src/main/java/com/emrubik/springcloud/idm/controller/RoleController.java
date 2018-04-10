@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,10 +69,24 @@ public class RoleController {
     public @NotNull
     ResponseEntity deleteRole(@PathVariable String id) {
         BaseResp resp = new BaseResp();
+        //如果有用户绑定了这个角色，则不允许删除
+        boolean binded = roleService.isRoleBinded(id);
+        if(binded){
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+            resp.setMessage("有用户绑定了该角色，不允许删除，roleId:"+id);
+            return ResponseEntity.ok(resp);
+        }
+
         //先删除角色与权限的绑定关系
-        rolePermissionBindService.delete(new EntityWrapper<RolePermissionBind>().eq("role_id", id));
+        boolean result = rolePermissionBindService.delete(new EntityWrapper<RolePermissionBind>().eq("role_id", id));
+        if (!result) {
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+            resp.setMessage("角色与权限的绑定关系删除失败，roleId:" + id);
+            return ResponseEntity.ok(resp);
+        }
+
         //删除角色
-        boolean result = roleService.delete(new EntityWrapper<Role>().eq("id", id));
+         result = roleService.delete(new EntityWrapper<Role>().eq("id", id));
         if (!result) {
             resp.setResultCode(BaseResp.RESULT_FAILED);
             resp.setMessage("角色删除失败，roleId:" + id);
@@ -111,6 +126,33 @@ public class RoleController {
         BaseResp<Role> baseResp = new BaseResp<Role>();
         baseResp.setPayLoad(role);
         return ResponseEntity.ok(baseResp);
+    }
+
+    @DeleteMapping
+    public @NotNull
+    ResponseEntity
+    deleteRoleList(@RequestBody BaseReq<Role> baseReq) {
+        List<String> roleIdList = new ArrayList<String>();
+        BaseResp resp = new BaseResp();
+        List<Role> roles = baseReq.getPayloads();
+        int size = roles.size();
+        for (int i = 0; i < size; i++) {
+            String roleId = roles.get(i).getId() + "";
+            boolean binded = roleService.isRoleBinded(roleId);
+            if(binded){
+                resp.setMessage("有用户绑定了该角色，不允许删除，roleId:"+roleId);
+                resp.setResultCode(BaseResp.RESULT_FAILED);
+                return ResponseEntity.ok(resp);
+            }
+            roleIdList.add(roleId);
+        }
+
+        boolean result = roleService.deleteBatchIds(roleIdList);
+        if (!result) {
+            resp.setMessage("删除失败,roleIdList:" + roleIdList);
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
     }
 
 }

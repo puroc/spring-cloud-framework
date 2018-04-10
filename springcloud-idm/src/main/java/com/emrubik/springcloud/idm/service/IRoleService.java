@@ -20,4 +20,6 @@ public interface IRoleService extends IService<Role> {
 
     Page<Role> getRoleListByOrgId(Page<Role> page, @Param("ew") Wrapper<Role> wrapper);
 
+    boolean isRoleBinded(String roleId);
+
 }

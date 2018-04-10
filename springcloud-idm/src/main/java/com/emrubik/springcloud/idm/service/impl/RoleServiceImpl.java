@@ -1,13 +1,19 @@
 package com.emrubik.springcloud.idm.service.impl;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springcloud.dao.entity.Role;
+import com.emrubik.springcloud.dao.entity.UserRoleBind;
 import com.emrubik.springcloud.dao.mapper.RoleMapper;
 import com.emrubik.springcloud.idm.service.IRoleService;
+import com.emrubik.springcloud.idm.service.IUserRoleBindService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,6 +26,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
+    @Autowired
+    private IUserRoleBindService userRoleBindService;
+
+
+
     @Override
     public Role getRoleInfo(String id) {
         return baseMapper.getRoleInfo(id);
@@ -30,4 +41,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         page.setRecords(baseMapper.getRoleListByOrgId(page,wrapper));
         return page;
     }
+
+    @Override
+    public boolean isRoleBinded(String roleId) {
+        List<UserRoleBind> permissionBindList = userRoleBindService.selectList(new EntityWrapper<UserRoleBind>().eq("role_id", roleId));
+        return !permissionBindList.isEmpty();
+    }
+
+
 }

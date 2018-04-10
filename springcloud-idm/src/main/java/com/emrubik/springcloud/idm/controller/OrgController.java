@@ -4,8 +4,8 @@ package com.emrubik.springcloud.idm.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.emrubik.springcloud.common.util.IdmHelper;
 import com.emrubik.springcloud.dao.entity.Org;
+import com.emrubik.springcloud.dao.entity.Role;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.base.BaseResp;
@@ -13,6 +13,7 @@ import com.emrubik.springcloud.domain.to.base.PageResp;
 import com.emrubik.springcloud.domain.to.org.AddOrgReq;
 import com.emrubik.springcloud.domain.to.org.OrgTree;
 import com.emrubik.springcloud.idm.service.IOrgService;
+import com.emrubik.springcloud.idm.service.IRoleService;
 import com.emrubik.springcloud.idm.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -45,41 +46,8 @@ public class OrgController {
     @Autowired
     private IOrgService orgService;
 
-//    @GetMapping("/{orgId}/users")
-//    public @NotNull
-//    ResponseEntity getUserListByOrgId(@PathVariable String orgId,
-//                                      @RequestParam int current, int size,
-//                                      @RequestParam(required = false) String name,
-//                                      @RequestParam(required = false) String username,
-//                                      @RequestParam(required = false) String phone,
-//                                      @RequestParam(required = false) String email) throws Exception {
-//
-//        //根据当前机构ID查询出机构树，并转换为list
-//        List<Integer> orgList = getOrgList(orgId);
-//
-//        Wrapper<User> wrapper = new EntityWrapper<User>().eq("org_id", orgId);
-//        for (Integer sonOrgId : orgList) {
-//            wrapper.or().eq("org_id", sonOrgId);
-//        }
-//        if (!StringUtils.isEmpty(name)) {
-//            wrapper.eq("name", name);
-//        }
-//        if (!StringUtils.isEmpty(username)) {
-//            wrapper.eq("username", username);
-//        }
-//        if (!StringUtils.isEmpty(email)) {
-//            wrapper.eq("email", email);
-//        }
-//        if (!StringUtils.isEmpty(phone)) {
-//            wrapper.eq("phone", phone);
-//        }
-//
-//        Page<User> userPage = userService.selectPage(new Page<User>(current, size), wrapper);
-//        PageResp<User> baseResp = new PageResp<User>();
-//        baseResp.setPayloads(userPage.getRecords());
-//        baseResp.setTotalNum(userPage.getTotal());
-//        return ResponseEntity.ok(baseResp);
-//    }
+    @Autowired
+    private IRoleService roleService;
 
     @GetMapping("/{orgId}/users")
     public @NotNull
@@ -92,7 +60,8 @@ public class OrgController {
 
         //根据当前机构ID查询出机构树，并转换为list
         List<Integer> orgList = getOrgList(orgId);
-        Wrapper<User> wrapper = new EntityWrapper<User>().in("org_id",orgList);
+
+        Wrapper<User> wrapper = new EntityWrapper<User>().in("org_id", orgList);
         if (!StringUtils.isEmpty(name)) {
             wrapper.eq("name", name);
         }
@@ -105,6 +74,7 @@ public class OrgController {
         if (!StringUtils.isEmpty(phone)) {
             wrapper.eq("phone", phone);
         }
+
         Page<User> userPage = userService.getUserListByOrgId(new Page<User>(current, size), wrapper);
         PageResp<User> baseResp = new PageResp<User>();
         baseResp.setPayloads(userPage.getRecords());
@@ -112,9 +82,29 @@ public class OrgController {
         return ResponseEntity.ok(baseResp);
     }
 
+    @GetMapping("/{orgId}/roles")
+    public @NotNull
+    ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
+                                      @RequestParam int current, int size,
+                                      @RequestParam(required = false) String name) {
+        //根据当前机构获取其上级所有机构（包括当前机构）
+        List<Integer> upperOrgList = orgService.getUpperOrgList(orgId);
+
+        Wrapper<Role> wrapper = new EntityWrapper<Role>().in("org_id", upperOrgList);
+        if (!StringUtils.isEmpty(name)) {
+            wrapper.eq("name", name);
+        }
+
+        Page<Role> rolePage = roleService.getRoleListByOrgId(new Page<Role>(current, size), wrapper);
+        PageResp<Role> baseResp = new PageResp<Role>();
+        baseResp.setPayloads(rolePage.getRecords());
+        baseResp.setTotalNum(rolePage.getTotal());
+        return ResponseEntity.ok(baseResp);
+    }
+
     private List<Integer> getOrgList(@PathVariable String orgId) {
         OrgTree orgTree = orgService.getOrgTree(orgId);
-        List<Integer> orgList = IdmHelper.getOrgList(new ArrayList<Integer>(),orgTree);
+        List<Integer> orgList = orgService.getOrgList(new ArrayList<Integer>(), orgTree);
         return orgList;
     }
 

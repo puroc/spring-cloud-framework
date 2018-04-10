@@ -2,4 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emrubik.springcloud.dao.mapper.RoleMapper">
 
+    <resultMap id="RoleResultMap" type="com.emrubik.springcloud.dao.entity.Role">
+        <id column="id" jdbcType="INTEGER" property="id"></id>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="orgId" jdbcType="INTEGER" property="orgId"></result>
+        <association property="org" javaType="com.emrubik.springcloud.dao.entity.Org">
+            <id column="orgId" jdbcType="INTEGER" property="id"></id>
+            <result column="orgName" jdbcType="VARCHAR" property="name"></result>
+        </association>
+        <collection property="permissions" ofType="com.emrubik.springcloud.dao.entity.Permission">
+            <id column="permissionId" jdbcType="INTEGER" property="id"></id>
+            <result column="permissionName" jdbcType="VARCHAR" property="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getRoleInfo" resultMap="RoleResultMap">
+        SELECT
+        role.id AS id,
+        role.`name` AS NAME,
+        role.org_id AS orgId,
+        org.name AS orgName,
+        permission.id AS permissionId,
+        permission.`name` AS permissionName
+        FROM
+        role
+        LEFT OUTER JOIN role_permission_bind ON role.id =role_permission_bind.role_id
+        LEFT OUTER JOIN permission ON role_permission_bind.permission_id = permission.id
+        LEFT OUTER JOIN org on role.org_id=org.id
+        where role.id=#{roleId}
+    </select>
+
+    <select id="getRoleListByOrgId" resultMap="RoleResultMap">
+        SELECT
+            role.id AS id,
+            role.`name` AS NAME,
+            role.org_id AS orgId,
+            org.name AS orgName
+        FROM role
+        INNER JOIN org ON `role`.org_id=org.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
 </mapper>

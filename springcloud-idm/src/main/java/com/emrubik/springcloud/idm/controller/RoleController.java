@@ -2,6 +2,7 @@ package com.emrubik.springcloud.idm.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.emrubik.springcloud.dao.entity.Permission;
 import com.emrubik.springcloud.dao.entity.Role;
 import com.emrubik.springcloud.dao.entity.RolePermissionBind;
 import com.emrubik.springcloud.domain.to.base.BaseReq;
@@ -94,6 +95,7 @@ public class RoleController {
         return ResponseEntity.ok(resp);
     }
 
+    @Transactional
     @PutMapping("/{id}")
     public @NotNull
     ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
@@ -104,7 +106,22 @@ public class RoleController {
             baseResp.setMessage("更新角色失败，roleId:" + id);
             baseResp.setResultCode(BaseResp.RESULT_FAILED);
         }
+
+        //更新角色和权限的绑定关系
+        updateRolePermissionBind(role);
         return ResponseEntity.ok(baseResp);
+    }
+
+    private boolean updateRolePermissionBind( Role role) {
+        rolePermissionBindService.delete(new EntityWrapper<RolePermissionBind>().eq("role_id", role.getId()));
+        List<RolePermissionBind> permissionBinds = new ArrayList<RolePermissionBind>();
+        for (Permission permission : role.getPermissions()) {
+            permissionBinds.add(new RolePermissionBind(){{
+                this.setRoleId(role.getId());
+                this.setPermissionId(permission.getId());
+            }});
+        }
+        return rolePermissionBindService.insertBatch(permissionBinds);
     }
 
     @DeleteMapping("/{id}/permission")

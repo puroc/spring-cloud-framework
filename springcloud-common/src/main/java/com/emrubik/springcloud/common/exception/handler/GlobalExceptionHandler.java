@@ -20,14 +20,14 @@ public class GlobalExceptionHandler {
         log.error(t.getMessage(),t);
         BaseResp resp = new BaseResp();
         resp.setResultCode(BaseResp.RESULT_FAILED);
-        resp.setMessage(t.getMessage());
+        resp.setMessage("操作失败");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity MethodArgumentNotValidExceptionHandler(HttpServletResponse response, Throwable t) {
         BaseResp resp = new BaseResp();
         resp.setResultCode(BaseResp.RESULT_FAILED);
-        resp.setMessage(t.getMessage());
+        resp.setMessage("参数校验失败");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
     }
 

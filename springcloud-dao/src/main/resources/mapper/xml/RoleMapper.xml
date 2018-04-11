@@ -24,8 +24,7 @@
         org.name AS orgName,
         permission.id AS permissionId,
         permission.`name` AS permissionName
-        FROM
-        role
+        FROM role
         LEFT OUTER JOIN role_permission_bind ON role.id =role_permission_bind.role_id
         LEFT OUTER JOIN permission ON role_permission_bind.permission_id = permission.id
         LEFT OUTER JOIN org on role.org_id=org.id
@@ -37,9 +36,13 @@
             role.id AS id,
             role.`name` AS NAME,
             role.org_id AS orgId,
-            org.name AS orgName
+            org.NAME AS orgName,
+            permission.id AS permissionId,
+            permission.`name` AS permissionName
         FROM role
-        INNER JOIN org ON `role`.org_id=org.id
+        INNER JOIN org ON `role`.org_id = org.id
+        LEFT OUTER JOIN role_permission_bind ON role.id = role_permission_bind.role_id
+        LEFT OUTER JOIN permission ON role_permission_bind.permission_id = permission.id
         <where>
             ${ew.sqlSegment}
         </where>

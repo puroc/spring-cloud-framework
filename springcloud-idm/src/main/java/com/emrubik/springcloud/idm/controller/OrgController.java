@@ -64,16 +64,16 @@ public class OrgController {
 
         Wrapper<User> wrapper = new EntityWrapper<User>().in("org_id", orgList);
         if (!StringUtils.isEmpty(name)) {
-            wrapper.eq("name", name);
+            wrapper.like("user.name", name.trim());
         }
         if (!StringUtils.isEmpty(username)) {
-            wrapper.eq("username", username);
+            wrapper.like("user.username", username.trim());
         }
         if (!StringUtils.isEmpty(email)) {
-            wrapper.eq("email", email);
+            wrapper.like("user.email", email.trim());
         }
         if (!StringUtils.isEmpty(phone)) {
-            wrapper.eq("phone", phone);
+            wrapper.like("user.phone", phone.trim());
         }
 
         Page<User> userPage = userService.getUserListByOrgId(new Page<User>(current, size), wrapper);
@@ -93,7 +93,7 @@ public class OrgController {
 
         Wrapper<Role> wrapper = new EntityWrapper<Role>().in("org_id", upperOrgList);
         if (!StringUtils.isEmpty(name)) {
-            wrapper.eq("name", name);
+            wrapper.like("role.name", name.trim());
         }
 
         Page<Role> rolePage = roleService.getRoleListByOrgId(new Page<Role>(current, size), wrapper);

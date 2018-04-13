@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,6 +134,7 @@ public class OrgController {
         Org org = new Org();
         org.setName(addOrgReq.getLabel());
         org.setParentId(Integer.parseInt(orgId));
+        org.setTimestamp(new Date());
         boolean result = orgService.insert(org);
         BaseResp baseResp = new BaseResp();
         if (!result) {

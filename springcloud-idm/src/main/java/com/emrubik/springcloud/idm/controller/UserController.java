@@ -130,6 +130,7 @@ public class UserController {
     public @NotNull
     ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
+        user.setTimestamp(new Date());
         boolean result = userService.update(user, new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
         if (!result) {
@@ -143,6 +144,7 @@ public class UserController {
     public @NotNull
     ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
+        user.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
         boolean result = false;
         if (userService.selectOne(Condition.create().eq("username", user.getUsername())) != null) {

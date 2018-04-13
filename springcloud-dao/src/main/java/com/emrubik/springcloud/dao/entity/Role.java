@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +41,16 @@ public class Role extends Model<Role> {
 
     @TableField(exist = false)
     private List<Permission> permissions;
+
+    private Date timestamp;
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Integer getOrgId() {
         return orgId;

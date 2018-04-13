@@ -46,6 +46,7 @@
         <where>
             ${ew.sqlSegment}
         </where>
+        ORDER BY role.TIMESTAMP DESC
     </select>
 
 </mapper>

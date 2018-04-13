@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public class RoleController {
     public @NotNull
     ResponseEntity addRole(@RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
+        role.setTimestamp(new Date());
         boolean result = roleService.insert(role);
         BaseResp baseResp = new BaseResp();
         if (!result) {
@@ -111,6 +113,7 @@ public class RoleController {
     public @NotNull
     ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
+        role.setTimestamp(new Date());
         boolean result = roleService.update(role, new EntityWrapper<Role>().eq("id", id));
         BaseResp baseResp = new BaseResp();
         if (!result) {

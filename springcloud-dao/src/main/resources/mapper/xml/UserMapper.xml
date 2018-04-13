@@ -79,6 +79,7 @@
         <where>
             ${ew.sqlSegment}
         </where>
+        ORDER BY `user`.TIMESTAMP DESC
     </select>
 
 </mapper>

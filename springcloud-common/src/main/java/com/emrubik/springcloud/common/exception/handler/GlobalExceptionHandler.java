@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 
 
 @ControllerAdvice("com.emrubik.springcloud")
@@ -21,24 +20,15 @@ public class GlobalExceptionHandler {
         log.error(t.getMessage(),t);
         BaseResp resp = new BaseResp();
         resp.setResultCode(BaseResp.RESULT_FAILED);
-        resp.setMessage(t.getMessage());
+        resp.setMessage("操作失败");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity MethodArgumentNotValidExceptionHandler(HttpServletResponse response, Throwable t) {
-        log.error(t.getMessage(),t);
         BaseResp resp = new BaseResp();
         resp.setResultCode(BaseResp.RESULT_FAILED);
-        resp.setMessage(t.getMessage());
+        resp.setMessage("参数校验失败");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
-    }
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity ConstraintViolationExceptionHandler(HttpServletResponse response, Throwable t) {
-        log.error(t.getMessage(),t);
-        BaseResp resp = new BaseResp();
-        resp.setResultCode(BaseResp.RESULT_FAILED);
-        resp.setMessage(t.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
 
 }

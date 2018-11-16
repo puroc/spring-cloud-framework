@@ -15,4 +15,5 @@ public class SpringcloudIdmApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringcloudIdmApplication.class, args);
 	}
+
 }

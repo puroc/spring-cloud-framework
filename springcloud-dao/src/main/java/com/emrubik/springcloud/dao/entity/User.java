@@ -1,16 +1,23 @@
 package com.emrubik.springcloud.dao.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author puroc123
@@ -22,17 +29,55 @@ public class User extends Model<User> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    @Pattern(regexp = "^\\w+$", message = "用户名只能由字母数字和下划线组成")
+    @NotBlank
     private String username;
+
+    @Pattern(regexp = "^\\w+$", message = "密码只能由字母数字和下划线组成")
+    @Length(min = 3, max = 6, message = "密码长度位3到6位")
+    @NotBlank
     private String password;
+
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$", message = "姓名必须为中文")
+    @NotBlank
     private String name;
-    private String birthday;
+
+    @Pattern(regexp = "^((13[0-9])|(14[0-9])|(15[0-9])|(17[0-9])|(18[0-9]))\\d{8}$", message = "手机号必须是以13~18开头的11位数字")
+    @NotBlank
     private String phone;
+
+    @Email
+    @NotBlank
     private String email;
-    private String sex;
+
+    @JSONField(serialize = false)
+    @NotNull(message = "机构ID不能为空")
     private Integer orgId;
 
     @TableField(exist = false)
     private List<Role> roles;
+
+    @TableField(exist = false)
+    private Org org;
+
+    private Date timestamp;
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org org) {
+        this.org = org;
+    }
 
     public List<Role> getRoles() {
         return roles;
@@ -74,14 +119,6 @@ public class User extends Model<User> {
         this.name = name;
     }
 
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -96,14 +133,6 @@ public class User extends Model<User> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 
     public Integer getOrgId() {
@@ -122,15 +151,13 @@ public class User extends Model<User> {
     @Override
     public String toString() {
         return "User{" +
-        ", id=" + id +
-        ", username=" + username +
-        ", password=" + password +
-        ", name=" + name +
-        ", birthday=" + birthday +
-        ", phone=" + phone +
-        ", email=" + email +
-        ", sex=" + sex +
-        ", orgId=" + orgId +
-        "}";
+                ", id=" + id +
+                ", username=" + username +
+                ", password=" + password +
+                ", name=" + name +
+                ", phone=" + phone +
+                ", email=" + email +
+                ", orgId=" + orgId +
+                "}";
     }
 }

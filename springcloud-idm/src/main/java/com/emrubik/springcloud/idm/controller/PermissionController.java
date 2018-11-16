@@ -1,9 +1,19 @@
 package com.emrubik.springcloud.idm.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.emrubik.springcloud.dao.entity.Permission;
+import com.emrubik.springcloud.domain.to.base.BaseResp;
+import com.emrubik.springcloud.idm.service.IPermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -14,8 +24,20 @@ import org.springframework.stereotype.Controller;
  * @since 2018-03-20
  */
 @Controller
-@RequestMapping("/permission")
+@RequestMapping("/idm/permission")
 public class PermissionController {
+
+    @Autowired
+    private IPermissionService permissionService;
+
+    @GetMapping
+    public @NotNull
+    ResponseEntity getPermissionList(){
+        List<Permission> permissions = permissionService.selectList(new EntityWrapper<Permission>());
+        BaseResp<Permission> baseResp = new BaseResp<Permission>();
+        baseResp.setPayloads(permissions);
+        return ResponseEntity.ok(baseResp);
+    }
 
 }
 

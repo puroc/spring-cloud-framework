@@ -1,6 +1,8 @@
 package com.emrubik.springcloud.idm.service.impl;
 
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.emrubik.springcloud.dao.entity.User;
 import com.emrubik.springcloud.dao.mapper.UserMapper;
@@ -19,7 +21,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     @Override
-    public User selectUserAndRoles(String userId) {
-        return baseMapper.selectUserAndRoles(userId);
+    public User getUserInfo(String userId) {
+        return baseMapper.getUserInfo(userId);
     }
+
+    @Override
+    public Page<User> getUserListByOrgId(Page<User> page, Wrapper<User> wrapper) {
+        page.setRecords(baseMapper.getUserListByOrgId(page,wrapper));
+        return page;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.emrubik.springcloud.idm.controller;
 
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.emrubik.springcloud.common.annotation.IgnoreJwtValidation;
 import com.emrubik.springcloud.common.util.BaseContextHandler;
@@ -15,6 +16,7 @@ import com.emrubik.springcloud.domain.vo.JwtInfo;
 import com.emrubik.springcloud.idm.constant.Constants;
 import com.emrubik.springcloud.idm.service.IUserService;
 import com.emrubik.springcloud.idm.service.IUserTokenBindService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -87,28 +89,16 @@ public class UserController {
     @GetMapping("/info")
     public @NotNull
     ResponseEntity getUserInfo() {
-        User user = userService.selectUserAndRoles(BaseContextHandler.getUserId());
+        User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);
-        return ResponseEntity.ok(resp);
-    }
-
-    @DeleteMapping("/{username}")
-    public @NotNull
-    ResponseEntity deleteUser(@PathVariable String username) {
-        boolean result = userService.delete(new EntityWrapper<User>().eq("username", username));
-        BaseResp resp = new BaseResp();
-        if (!result) {
-            resp.setMessage("username:" + username + "的用户不存在，删除失败");
-            resp.setResultCode(BaseResp.RESULT_FAILED);
-        }
         return ResponseEntity.ok(resp);
     }
 
     @DeleteMapping
     public @NotNull
     ResponseEntity
-    deleteUserList( @RequestBody BaseReq<User> baseReq) {
+    deleteUserList(@RequestBody BaseReq<User> baseReq) {
         List<String> userIdList = new ArrayList<String>();
         List<User> users = baseReq.getPayloads();
         int size = users.size();
@@ -124,10 +114,23 @@ public class UserController {
         return ResponseEntity.ok(resp);
     }
 
+    @DeleteMapping("/{username}")
+    public @NotNull
+    ResponseEntity deleteUser(@PathVariable String username) {
+        boolean result = userService.delete(new EntityWrapper<User>().eq("username", username));
+        BaseResp resp = new BaseResp();
+        if (!result) {
+            resp.setMessage("username:" + username + "的用户不存在，删除失败");
+            resp.setResultCode(BaseResp.RESULT_FAILED);
+        }
+        return ResponseEntity.ok(resp);
+    }
+
     @PutMapping("/{username}")
     public @NotNull
     ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
+        user.setTimestamp(new Date());
         boolean result = userService.update(user, new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
         if (!result) {
@@ -139,17 +142,24 @@ public class UserController {
 
     @PostMapping
     public @NotNull
-    ResponseEntity addUser(@RequestBody BaseReq<User> baseReq) {
+    ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
-        boolean result = userService.insert(user);
+        user.setTimestamp(new Date());
         BaseResp resp = new BaseResp();
+        boolean result = false;
+        if (userService.selectOne(Condition.create().eq("username", user.getUsername())) != null) {
+            resp.setMessage("username:" + user.getUsername() + "用户已经存在，不能添加用户名相同的用户");
+        } else {
+            result = userService.insert(user);
+        }
         if (!result) {
-            resp.setMessage("username:" + user.getUsername() + " 添加用户失败");
+            if (StringUtils.isEmpty(resp.getMessage())) {
+                resp.setMessage("username:" + user.getUsername() + " 添加用户失败");
+            }
             resp.setResultCode(BaseResp.RESULT_FAILED);
         }
         return ResponseEntity.ok(resp);
     }
-
 
     @GetMapping("/logout")
     public @NotNull

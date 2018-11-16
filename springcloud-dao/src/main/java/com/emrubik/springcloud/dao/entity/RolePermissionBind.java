@@ -1,10 +1,10 @@
 package com.emrubik.springcloud.dao.entity;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -21,7 +21,11 @@ public class RolePermissionBind extends Model<RolePermissionBind> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    @NotNull
     private Integer roleId;
+
+    @NotNull
     private Integer permissionId;
 
 

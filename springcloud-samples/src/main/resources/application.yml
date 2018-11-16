@@ -40,6 +40,9 @@ spring:
     sleuth:
       sampler:
         percentage: 1
+    boot:
+      admin:
+        url: http://localhost:8000
 
 #mybatis
 mybatis-plus:
@@ -70,3 +73,7 @@ mybatis-plus:
     configuration:
       map-underscore-to-camel-case: true
       cache-enabled: false
+
+management:
+  security:
+    enabled: false

@@ -1,12 +1,14 @@
-server: 
- port: 8769
+server:
+    port: 8769
 spring: 
- application: 
-  name: zipkin-server
+    application:
+      name: zipkin-server
 eureka: 
- client: 
-  serviceUrl: 
-   defaultZone: http://localhost:8761/eureka/ #注册服务器地址
+   client:
+    serviceUrl:
+     defaultZone: http://localhost:8761/eureka/ #注册服务器地址
 management: 
- security: 
-  enabled: false #关闭验证
+   security:
+    enabled: false #关闭验证
+
+

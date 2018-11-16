@@ -35,6 +35,9 @@ spring:
     sleuth:
       sampler:
         percentage: 1
+    boot:
+      admin:
+        url: http://localhost:8000
 
 #mybatis
 mybatis-plus:
@@ -123,6 +126,11 @@ info:
 
 jwt:
   expire: 36000
+
+management:
+  security:
+    enabled: false
+
 
 #redis-cache 相关
 #redis:

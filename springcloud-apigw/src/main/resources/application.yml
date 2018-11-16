@@ -40,6 +40,9 @@ spring:
     sleuth:
       sampler:
         percentage: 1
+    boot:
+      admin:
+        url: http://localhost:8000
 server:
     port: 8765 #启动端口
 #
@@ -157,3 +160,7 @@ info:
     description: "@project.description@"
     version: "@project.version@"
     spring-boot-version: "@project.parent.version@"
+
+management:
+  security:
+    enabled: false

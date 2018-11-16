@@ -8,6 +8,9 @@ spring:
                     search-locations: classpath:/config
     profiles:
       active: native
+    boot:
+          admin:
+            url: http://localhost:8000
 
 
 server:
@@ -32,3 +35,7 @@ info:
     description: "@project.description@"
     version: "@project.version@"
     spring-boot-version: "@project.parent.version@"
+
+management:
+  security:
+    enabled: false

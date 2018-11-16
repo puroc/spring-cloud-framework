@@ -1,6 +1,9 @@
 spring:
     application:
         name: springcloud-center
+    boot:
+      admin:
+        url: http://localhost:8000
 
 server:
     port: 8761
@@ -17,3 +20,7 @@ info:
     description: "@project.description@"
     version: "@project.version@"
     spring-boot-version: "@project.parent.version@"
+
+management:
+  security:
+    enabled: false

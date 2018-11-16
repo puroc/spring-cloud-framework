@@ -38,23 +38,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.33</version>
-		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>com.alibaba</groupId>-->
-			<!--<artifactId>druid</artifactId>-->
-			<!--<version>1.0.11</version>-->
-		<!--</dependency>-->
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.emrubik</groupId>
-			<artifactId>springcloud-domain</artifactId>
+			<artifactId>springcloud-dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

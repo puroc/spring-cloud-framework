@@ -30,10 +30,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<dependency><!-- spring boot aop starter依赖 -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.0.11</version>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -60,7 +64,12 @@
 			<artifactId>springcloud-domain</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

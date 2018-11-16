@@ -60,16 +60,17 @@ public class JwtHelper {
             if (claims.containsKey(EXP) && claims.containsKey(PAYLOAD)) {
                 long exp = (Long) claims.get(EXP);
                 long currentTimeMillis = System.currentTimeMillis();
-                if (exp > currentTimeMillis) {
-                    json = (String) claims.get(PAYLOAD);
-                } else {
-                    throw new JwtExpireException("jwt token过期");
-                }
+                json = (String) claims.get(PAYLOAD);
+//                if (exp > currentTimeMillis) {
+//                    json = (String) claims.get(PAYLOAD);
+//                } else {
+//                    throw new JwtExpireException("jwt token过期");
+//                }
             }
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(json, classT);
-        } catch (JwtExpireException e) {
-            throw e;
+//        } catch (JwtExpireException e) {
+//            throw e;
         } catch (Throwable t) {
             throw new JwtParseException("jwt token解析失败", t);
         }

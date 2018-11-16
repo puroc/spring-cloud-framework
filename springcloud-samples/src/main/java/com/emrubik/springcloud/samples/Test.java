@@ -5,6 +5,7 @@ import com.emrubik.springcloud.domain.to.base.BaseReq;
 import com.emrubik.springcloud.domain.to.payload.login.LoginReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,7 @@ public class Test implements CommandLineRunner{
         loginReq.setPassword("111");
         BaseReq<LoginReq> baseReq = new BaseReq<LoginReq>();
         baseReq.setPayLoad(loginReq);
-        userService.login(baseReq);
+        ResponseEntity resp = userService.login(baseReq);
+        System.out.println("111111111111111 "+resp.getStatusCode());
     }
 }

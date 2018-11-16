@@ -1,6 +1,6 @@
 spring:
     application:
-        name: springcloud-apigw
+        name: springcloud-samples
     thymeleaf:
         mode: LEGACYHTML5
         cache: false
@@ -40,30 +40,6 @@ spring:
     sleuth:
       sampler:
         percentage: 1
-server:
-    port: 8765 #启动端口
-#
-zuul:
-  ignored-services: "*"
-  sensitive-headers:
-  prefix: /api #为zuul设置一个公共前缀
-#  ratelimit: # 网关限流
-#    key-prefix: gate_rate
-#    enabled: true
-#    repository: REDIS #REDIS, JPA, IN_MEMORY
-#    behind-proxy: true
-#    default-policy: #optional - will apply unless specific policy exists
-#      limit: 200
-#      refresh-interval: 60 #default value (in seconds)
-#      type: #optional
-#        - user
-#        - origin
-#        - url
-  routes:
-    idm:
-      path: /idm/**  #代理前缀idm
-      serviceId: springcloud-idm
-      stripPrefix: false #是否保留代理前缀
 
 #mybatis
 mybatis-plus:
@@ -94,66 +70,3 @@ mybatis-plus:
     configuration:
       map-underscore-to-camel-case: true
       cache-enabled: false
-
-ribbon:
-  eureka:
-    enabled: true
-  ReadTimeout: 120000
-  ConnectTimeout: 120000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
-
-hystrix:
-  threadpool:
-    default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 50000
-          strategy: SEMAPHORE
-
-gate:
-  ignore:
-    startWith: /static,/user/login
-
-eureka:
-    instance:
-        statusPageUrlPath: /info
-        healthCheckUrlPath: /health
-        # docker 部署开启
-#        prefer-ip-address: true
-#        ip-address: 127.0.0.1
-    client:
-        serviceUrl:
-#            defaultZone: http://localhost:8761/eureka/
-                    # docker 部署开启
-            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
-
-feign:
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: true
-  compression:
-    request:
-      enabled: true
-      mime-types: text/xml,application/xml,application/json
-      min-request-size: 2048
-    response:
-      enabled: true
-
-jwt:
-  expire: 3600
-
-info:
-  app:
-    name: "@project.name@"
-    description: "@project.description@"
-    version: "@project.version@"
-    spring-boot-version: "@project.parent.version@"

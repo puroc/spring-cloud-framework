@@ -29,8 +29,9 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
-        druid:
-          proxy-filters: druidLogFilter,druidStatFilter
+#        druid:
+#          - proxy-filters: druidStatFilter
+#          - proxy-filters: druidLogFilter
     zipkin:
         enabled: true
         base-url: http://localhost:8769

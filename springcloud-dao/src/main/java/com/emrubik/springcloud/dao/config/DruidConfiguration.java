@@ -9,13 +9,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @ImportResource(locations = {"classpath:springcloud-dao-bean.xml"})
 @Configuration
@@ -23,7 +21,7 @@ public class DruidConfiguration {
 
 
     @Bean
-    public ServletRegistrationBean DruidStatViewServlet() {
+    public ServletRegistrationBean druidServlet() {
         //org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         //白名单：
@@ -40,7 +38,7 @@ public class DruidConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean druidStatFilter() {
+    public FilterRegistrationBean druidWebFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         //添加过滤规则.
         filterRegistrationBean.addUrlPatterns("/*");
@@ -49,26 +47,26 @@ public class DruidConfiguration {
         return filterRegistrationBean;
     }
 
-    @Bean("druidStatFilter")
-    public StatFilter statFilter() {
+    @Bean
+    public StatFilter druidStatFilter() {
         StatFilter sf = new StatFilter();
-        sf.setSlowSqlMillis(200);
+        sf.setSlowSqlMillis(3000);
         sf.setLogSlowSql(true);
         return sf;
     }
 
-    @Bean("druidLogFilter")
+    @Bean
     public Slf4jLogFilter druidLogFilter(){
         Slf4jLogFilter filter = new Slf4jLogFilter();
         filter.setDataSourceLogEnabled(true);
         filter.setStatementExecutableSqlLogEnable(true);
-//        filter.setResultSetLogEnabled(false);
-//        filter.setConnectionLogEnabled(false);
-//        filter.setStatementParameterClearLogEnable(false);
-//        filter.setStatementCreateAfterLogEnabled(false);
-//        filter.setStatementCloseAfterLogEnabled(false);
-//        filter.setStatementParameterSetLogEnabled(false);
-//        filter.setStatementPrepareAfterLogEnabled(false);
+        filter.setResultSetLogEnabled(false);
+        filter.setConnectionLogEnabled(false);
+        filter.setStatementParameterClearLogEnable(false);
+        filter.setStatementCreateAfterLogEnabled(false);
+        filter.setStatementCloseAfterLogEnabled(false);
+        filter.setStatementParameterSetLogEnabled(false);
+        filter.setStatementPrepareAfterLogEnabled(false);
         return  filter;
     }
 

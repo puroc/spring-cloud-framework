@@ -3,6 +3,27 @@ server:
 spring: 
     application:
       name: zipkin-server
+    datasource:
+            name: test
+            url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/zipkin?characterEncoding=utf8
+            username: root
+            password: 123456
+            # 使用druid数据源
+            type: com.alibaba.druid.pool.DruidDataSource
+            driver-class-name: com.mysql.jdbc.Driver
+            filters: stat
+            maxActive: 20
+            initialSize: 1
+            maxWait: 60000
+            minIdle: 1
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            validationQuery: select 'x'
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            poolPreparedStatements: true
+            maxOpenPreparedStatements: 20
 eureka: 
    client:
     serviceUrl:
@@ -10,5 +31,49 @@ eureka:
 management: 
    security:
     enabled: false #关闭验证
+
+
+#zipkin:
+#  storage:
+#    strict-trace-id: ${STRICT_TRACE_ID:true}
+#    search-enabled: ${SEARCH_ENABLED:true}
+#    type: ${STORAGE_TYPE:mem}
+#    mem:
+#      # Maximum number of spans to keep in memory.  When exceeded, oldest traces (and their spans) will be purged.
+#      # A safe estimate is 1K of memory per span (each span with 2 annotations + 1 binary annotation), plus
+#      # 100 MB for a safety buffer.  You'll need to verify in your own environment.
+#      # Experimentally, it works with: max-spans of 500000 with JRE argument -Xmx600m.
+#      max-spans: 500000
+#    mysql:
+#      host: ${MYSQL_HOST:localhost}
+#      port: ${MYSQL_TCP_PORT:3306}
+#      username: ${MYSQL_USER:root}
+#      password: ${MYSQL_PASS:123456}
+#      db: ${MYSQL_DB:zipkin}
+#      max-active: ${MYSQL_MAX_CONNECTIONS:10}
+#      use-ssl: ${MYSQL_USE_SSL:false}
+#  ui:
+#    enabled: ${QUERY_ENABLED:true}
+#    ## Values below here are mapped to ZipkinUiProperties, served as /config.json
+#    # Default limit for Find Traces
+#    query-limit: 10
+#    # The value here becomes a label in the top-right corner
+#    environment:
+#    # Default duration to look back when finding traces.
+#    # Affects the "Start time" element in the UI. 1 hour in millis
+#    default-lookback: 3600000
+#    # When false, disables the "find a trace" screen
+#    search-enabled: ${SEARCH_ENABLED:true}
+#    # Which sites this Zipkin UI covers. Regex syntax. (e.g. http:\/\/example.com\/.*)
+#    # Multiple sites can be specified, e.g.
+#    # - .*example1.com
+#    # - .*example2.com
+#    # Default is "match all websites"
+#    instrumented: .*
+#    # URL placed into the <base> tag in the HTML
+#    base-path: /zipkin
+
+
+
 
 

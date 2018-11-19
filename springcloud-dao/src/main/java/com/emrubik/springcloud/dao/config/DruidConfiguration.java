@@ -2,18 +2,25 @@ package com.emrubik.springcloud.dao.config;
 
 import com.alibaba.druid.filter.logging.Slf4jLogFilter;
 import com.alibaba.druid.filter.stat.StatFilter;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceStatLogger;
+import com.alibaba.druid.pool.DruidDataSourceStatLoggerAdapter;
+import com.alibaba.druid.pool.DruidDataSourceStatValue;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.aop.support.JdkRegexpMethodPointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.sql.DataSource;
 
 @ImportResource(locations = {"classpath:springcloud-dao-bean.xml"})
 @Configuration
@@ -52,6 +59,7 @@ public class DruidConfiguration {
         StatFilter sf = new StatFilter();
         sf.setSlowSqlMillis(3000);
         sf.setLogSlowSql(true);
+        sf.setMergeSql(true);
         return sf;
     }
 
@@ -70,21 +78,22 @@ public class DruidConfiguration {
         return  filter;
     }
 
+    public class MyStatLogger extends DruidDataSourceStatLoggerAdapter implements DruidDataSourceStatLogger {
+        private Logger logger = LoggerFactory.getLogger(MyStatLogger.class);
 
-//    @Bean
-//    public DruidStatInterceptor druidStatInterceptor(){
-//        return new DruidStatInterceptor();
-//    }
-//
-//    @Bean
-//    @Scope("prototype")
-//    public JdkRegexpMethodPointcut jdkRegexpMethodPointcut(){
-//        JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
-//        List<String> list = new ArrayList<String>();
-//        list.add("com.emrubik.springcloud.*");
-//        list.toArray(pointcut.getPatterns());
-//        return pointcut;
-//    }
+        @Override
+        public void log(DruidDataSourceStatValue statValue) {
+            logger.info("***************************************************");
+            logger.info("                  Druid监控数据清空:"+statValue.getSqlList().size()+"                    ");
+            logger.info("***************************************************");
+        }
+    }
+
+    @Autowired
+    public void setStatLogger(DataSource dataSource){
+        ((DruidDataSource)dataSource).setStatLogger(new MyStatLogger());
+    }
+
 
 
 }

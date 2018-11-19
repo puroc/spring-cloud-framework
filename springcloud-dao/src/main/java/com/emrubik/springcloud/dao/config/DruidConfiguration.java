@@ -91,6 +91,7 @@ public class DruidConfiguration {
 
     @Autowired
     public void setStatLogger(DataSource dataSource){
+        ((DruidDataSource)dataSource).setTimeBetweenLogStatsMillis(15000);
         ((DruidDataSource)dataSource).setStatLogger(new MyStatLogger());
     }
 

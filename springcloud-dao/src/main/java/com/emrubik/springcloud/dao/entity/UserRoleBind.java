@@ -1,10 +1,10 @@
 package com.emrubik.springcloud.dao.entity;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 
 /**
  * <p>

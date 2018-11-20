@@ -35,9 +35,9 @@ spring:
     sleuth:
       sampler:
         percentage: 1
-    boot:
-      admin:
-        url: http://localhost:8000
+#    boot:
+#      admin:
+#        url: http://localhost:8000
 
 #mybatis
 mybatis-plus:

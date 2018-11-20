@@ -78,21 +78,25 @@ public class DruidConfiguration {
         return  filter;
     }
 
-    public class MyStatLogger extends DruidDataSourceStatLoggerAdapter implements DruidDataSourceStatLogger {
-        private Logger logger = LoggerFactory.getLogger(MyStatLogger.class);
+//    public class MyStatLogger extends DruidDataSourceStatLoggerAdapter implements DruidDataSourceStatLogger {
+//        private Logger logger = LoggerFactory.getLogger(MyStatLogger.class);
+//
+//        @Override
+//        public void log(DruidDataSourceStatValue statValue) {
+//            logger.info("***************************************************");
+//            logger.info("                  Druid监控数据清空:"+statValue.getSqlList().size()+"                    ");
+//            logger.info("***************************************************");
+//        }
+//    }
 
-        @Override
-        public void log(DruidDataSourceStatValue statValue) {
-            logger.info("***************************************************");
-            logger.info("                  Druid监控数据清空:"+statValue.getSqlList().size()+"                    ");
-            logger.info("***************************************************");
-        }
-    }
+//    @Autowired
+//    public void setStatLogger(DataSource dataSource){
+//        ((DruidDataSource)dataSource).setStatLogger(new MyStatLogger());
+//    }
 
     @Autowired
-    public void setStatLogger(DataSource dataSource){
+    public void setStatLogInterval(DataSource dataSource){
         ((DruidDataSource)dataSource).setTimeBetweenLogStatsMillis(15000);
-        ((DruidDataSource)dataSource).setStatLogger(new MyStatLogger());
     }
 
 

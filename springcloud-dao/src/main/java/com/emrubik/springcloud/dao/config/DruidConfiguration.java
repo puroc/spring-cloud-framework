@@ -31,16 +31,11 @@ public class DruidConfiguration {
     public ServletRegistrationBean druidServlet() {
         //org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-        //白名单：
-//        servletRegistrationBean.addInitParameter("allow", "192.168.1.20");
-        //黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
-//        servletRegistrationBean.addInitParameter("deny", "192.168.1.73");
-
         //登录查看信息的账号密码.
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
         servletRegistrationBean.addInitParameter("loginPassword", "123456");
         //是否能够重置数据.
-        servletRegistrationBean.addInitParameter("resetEnable", "false");
+//        servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
     }
 
@@ -57,8 +52,10 @@ public class DruidConfiguration {
     @Bean
     public StatFilter druidStatFilter() {
         StatFilter sf = new StatFilter();
+//        超过3秒为慢sql
         sf.setSlowSqlMillis(3000);
         sf.setLogSlowSql(true);
+//        相同的sql要合并统计
         sf.setMergeSql(true);
         return sf;
     }
@@ -96,9 +93,7 @@ public class DruidConfiguration {
 
     @Autowired
     public void setStatLogInterval(DataSource dataSource){
-        ((DruidDataSource)dataSource).setTimeBetweenLogStatsMillis(15000);
+        ((DruidDataSource)dataSource).setTimeBetweenLogStatsMillis(30*60*1000);
     }
-
-
 
 }

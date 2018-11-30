@@ -36,6 +36,9 @@
 		<module>springcloud-apigw</module>
 		<module>springcloud-idm</module>
 		<module>springcloud-samples</module>
+		<module>springcloud-admin</module>
+		<module>springcloud-zipkin</module>
+		<module>springcloud-badboy</module>
 	</modules>
 
 	<dependencies>

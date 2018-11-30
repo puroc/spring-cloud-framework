@@ -154,6 +154,12 @@ public class OrgController {
             baseResp.setMessage("该机构拥有下级机构，不允许删除");
             return ResponseEntity.ok(baseResp);
         }
+        Org rootOrg = orgService.selectOne(new EntityWrapper<Org>().eq("id",orgId).eq("parent_id", 0));
+        if(rootOrg!=null){
+            baseResp.setResultCode(BaseResp.CAN_NOT_DELETE_ROOT_ORG);
+            baseResp.setMessage("不能删除企业根机构");
+            return ResponseEntity.ok(baseResp);
+        }
         boolean result = orgService.delete(new EntityWrapper<Org>().eq("id", orgId));
         if (!result) {
             baseResp.setResultCode(BaseResp.RESULT_FAILED);

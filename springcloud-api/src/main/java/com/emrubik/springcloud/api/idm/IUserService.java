@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(value = "springcloud-idm")
 public interface IUserService {
 
-  @PostMapping("/idm/user/login")
-  public ResponseEntity login(BaseReq<LoginReq> baseReq);
+    @PostMapping("/idm/user/login")
+    ResponseEntity login(BaseReq<LoginReq> baseReq);
 
 }

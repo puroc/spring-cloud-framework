@@ -81,9 +81,9 @@ eureka:
 #        ip-address: 127.0.0.1
     client:
         serviceUrl:
-#            defaultZone: http://localhost:8761/eureka/
-                    # docker 部署开启
-            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+
+            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/ #单机Eureka
+#            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/,http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8762}/eureka/ #集群Eureka
 # 必须配置
 feign:
   httpclient:
@@ -130,19 +130,3 @@ jwt:
 management:
   security:
     enabled: false
-
-
-#redis-cache 相关
-#redis:
-#    pool:
-#         maxActive: 300
-#         maxIdle: 100
-#         maxWait: 1000
-#    host: ${REDIS_HOST:localhost}
-#    port:  ${REDIS_PORT:6379}
-#    password:
-#    timeout: 2000
-#    # 服务或应用名
-#    sysName: ace-admin
-#    enable: true
-#    database: 0

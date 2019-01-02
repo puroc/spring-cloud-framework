@@ -1,0 +1,36 @@
+spring:
+    application:
+        name: springcloud-center-1
+#    boot:
+#      admin:
+#        url: http://localhost:8000
+
+server:
+    port: 8761
+
+##单机配置
+eureka:
+    client:
+      registerWithEureka: false  #是否将自己注册到Eureka Server，默认为true
+      fetchRegistry: false      #是否从Eureka Server获取注册信息，默认为true，为true时，可以启动，但报异常：Cannot execute request on any known server
+    server:
+      enable-self-preservation: true #默认情况下Eureka 在90内没有获取的服务的心跳，将注销该服务。但是有时候是网络分区故障的问题导致Eureka无法收到心跳，服务本身是健壮的，如果删除此服务，这会导致服务不可用。当开启了Eureka自我保护后，Eureka会保护此服务在注册表中的信息，使其不会被删除，等网络恢复后，Eureka节点会自动退出自我保护模式。
+
+#集群配置
+#eureka:
+#    client:
+#      fetch-registry: false
+#      register-with-eureka: false
+#      serviceUrl:
+#        defaultZone: http://localhost:8762/eureka/
+
+info:
+  app:
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"
+    spring-boot-version: "@project.parent.version@"
+
+management:
+  security:
+    enabled: false

@@ -8,9 +8,9 @@ spring:
                     search-locations: classpath:/config
     profiles:
       active: native
-    boot:
-          admin:
-            url: http://localhost:8000
+#    boot:
+#          admin:
+#            url: http://localhost:8000
 
 
 server:

@@ -1,3 +1,6 @@
+logging:
+    config: classpath:logback-spring.xml
+
 spring:
     application:
         name: springcloud-samples
@@ -84,3 +87,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/ #单机Eureka
+
+#启用feign okhttp，停止feign httpclient
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+
+

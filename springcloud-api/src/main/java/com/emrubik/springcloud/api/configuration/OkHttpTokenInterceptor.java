@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-//OkHttp的拦截器，暂不使用
+//OkHttp的拦截器
 @Component
 public class OkHttpTokenInterceptor implements Interceptor {
 

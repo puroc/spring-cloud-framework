@@ -84,21 +84,15 @@ eureka:
 
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/ #单机Eureka
 #            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/,http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8762}/eureka/ #集群Eureka
-# 必须配置
-feign:
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: true
 
-ribbon:
-  eureka:
-    enabled: true
-  ReadTimeout: 120000
-  ConnectTimeout: 120000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
+#ribbon:
+#  eureka:
+#    enabled: true
+#  ReadTimeout: 120000
+#  ConnectTimeout: 120000
+#  MaxAutoRetries: 0
+#  MaxAutoRetriesNextServer: 1
+#  OkToRetryOnAllOperations: false
 
 hystrix:
   threadpool:

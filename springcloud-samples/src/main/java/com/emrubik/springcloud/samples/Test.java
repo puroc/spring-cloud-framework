@@ -32,8 +32,8 @@ public class Test implements CommandLineRunner {
                     @Override
                     public void run() {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                        try {
-                            while (true) {
+                        while (true) {
+                            try {
                                 System.out.println("please input...");
                                 String line = reader.readLine();
                                 if ("quit".equalsIgnoreCase(line)) {
@@ -43,17 +43,10 @@ public class Test implements CommandLineRunner {
                                     login();
                                     System.out.println("ok");
                                 }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } finally {
-                            try {
-                                reader.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-
                     }
                 }
         ).start();

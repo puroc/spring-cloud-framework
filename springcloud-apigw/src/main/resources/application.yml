@@ -67,6 +67,9 @@ zuul:
       path: /idm/**  #代理前缀idm
       serviceId: springcloud-idm
       stripPrefix: false #是否保留代理前缀
+#  ignored-patterns: #根据表达式排除路由，禁止符合条件的接口被访问
+#      - /api/idm/user/login  #可以配置完整的url，他可以匹配http://localhost:8765/api/idm/user/login
+#      - /**/idm/**  #也可以配置通配符，他可以匹配http://localhost:8765/api/idm/user/login
 
 #mybatis
 mybatis-plus:
@@ -110,9 +113,9 @@ ribbon:
 hystrix:
   threadpool:
     default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      coreSize: 1000 #并发执行的最大线程数，默认10
+      maxQueueSize: 1000 #BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
   command:
     default:
       execution:
@@ -161,6 +164,6 @@ info:
     version: "@project.version@"
     spring-boot-version: "@project.parent.version@"
 
-management:
-  security:
-    enabled: false
+#management:
+#  security:
+#    enabled: false

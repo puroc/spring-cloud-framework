@@ -5,7 +5,7 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
-public class LogFilter extends ZuulFilter {
+public class LogPostFilter extends ZuulFilter {
 
     @Override
     public String filterType() {

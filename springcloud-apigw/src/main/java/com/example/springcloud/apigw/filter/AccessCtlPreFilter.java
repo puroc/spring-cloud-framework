@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Slf4j
-public class AdminAccessFilter extends ZuulFilter {
+public class AccessCtlPreFilter extends ZuulFilter {
     @Autowired
     @Lazy
     private IUserService userService;

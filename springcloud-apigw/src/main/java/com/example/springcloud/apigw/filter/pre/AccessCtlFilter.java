@@ -1,4 +1,4 @@
-package com.example.springcloud.apigw.filter;
+package com.example.springcloud.apigw.filter.pre;
 
 import com.emrubik.springcloud.api.idm.IUserService;
 import com.emrubik.springcloud.common.util.BaseContextHandler;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Slf4j
-public class AccessCtlPreFilter extends ZuulFilter {
+public class AccessCtlFilter extends ZuulFilter {
     @Autowired
     @Lazy
     private IUserService userService;
@@ -39,7 +39,12 @@ public class AccessCtlPreFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        //返回true，代表这个filter的run方法会被调用
+        RequestContext ctx = RequestContext.getCurrentContext();
+        // 如果请求最终不会被zuul转发到后端服务器，则不执行当前filter的run方法
+        if (!ctx.sendZuulResponse()) {
+            return false;
+        }
+        //返回true，代表这个filter的run方法会被执行
         return true;
     }
 

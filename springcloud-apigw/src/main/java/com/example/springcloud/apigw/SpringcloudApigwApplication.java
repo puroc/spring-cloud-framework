@@ -15,4 +15,6 @@ public class SpringcloudApigwApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringcloudApigwApplication.class, args);
 	}
+
+
 }

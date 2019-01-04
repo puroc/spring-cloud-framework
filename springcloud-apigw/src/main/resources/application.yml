@@ -48,7 +48,7 @@ server:
 #
 zuul:
   ignored-services: "*"
-  sensitive-headers:
+  sensitive-headers:  #sensitiveHeaders默认值为"Cookie", "Set-Cookie", "Authorization"，这些头的信息会被zuul过滤掉，此处将sensitiveHeaders的值设置为空，即zuul不会过滤这些头
   prefix: /api #为zuul设置一个公共前缀
 #  ratelimit: # 网关限流
 #    key-prefix: gate_rate
@@ -67,6 +67,7 @@ zuul:
       path: /idm/**  #代理前缀idm
       serviceId: springcloud-idm
       stripPrefix: false #是否保留代理前缀
+
 #  ignored-patterns: #根据表达式排除路由，禁止符合条件的接口被访问
 #      - /api/idm/user/login  #可以配置完整的url，他可以匹配http://localhost:8765/api/idm/user/login
 #      - /**/idm/**  #也可以配置通配符，他可以匹配http://localhost:8765/api/idm/user/login

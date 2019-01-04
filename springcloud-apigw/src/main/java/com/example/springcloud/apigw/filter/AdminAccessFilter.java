@@ -7,6 +7,7 @@ import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -27,16 +28,18 @@ public class AdminAccessFilter extends ZuulFilter {
 
     @Override
     public String filterType() {
-        return "pre";
+        //pre filter，最先执行，pre filter可以有多个，按照filterOrder()定义的顺序执行
+        return FilterConstants.PRE_TYPE;
     }
 
     @Override
     public int filterOrder() {
-        return 1;
+        return FilterConstants.PRE_DECORATION_FILTER_ORDER - 1;
     }
 
     @Override
     public boolean shouldFilter() {
+        //返回true，代表这个filter的run方法会被调用
         return true;
     }
 
@@ -67,6 +70,9 @@ public class AdminAccessFilter extends ZuulFilter {
 //            checkUserPermission(permissions, ctx, user);
 //        }
 //        BaseContextHandler.remove();
+        //鉴权不过时回401
+//        ctx.setSendZuulResponse(false);
+//        ctx.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
         return null;
     }
 

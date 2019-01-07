@@ -24,11 +24,8 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-undertow</artifactId>
-		</dependency>
-		<dependency>
+
+        <dependency>
 			<groupId>com.emrubik</groupId>
 			<artifactId>springcloud-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

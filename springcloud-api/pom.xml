@@ -29,9 +29,13 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.openfeign</groupId>
-			<artifactId>feign-okhttp</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
+        <!--<dependency>-->
+        <!--<groupId>io.github.openfeign</groupId>-->
+        <!--<artifactId>feign-okhttp</artifactId>-->
+        <!--</dependency>-->
 		<dependency>
 			<groupId>com.emrubik</groupId>
 			<artifactId>springcloud-domain</artifactId>

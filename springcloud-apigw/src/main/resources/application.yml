@@ -135,6 +135,8 @@ feign:
   httpclient:
     enabled: false
   okhttp:
+    enabled: false
+  hystrix:
     enabled: true
   compression:
     request:

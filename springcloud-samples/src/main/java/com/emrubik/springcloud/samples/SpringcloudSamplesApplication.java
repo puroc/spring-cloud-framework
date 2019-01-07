@@ -2,12 +2,10 @@ package com.emrubik.springcloud.samples;
 
 import com.emrubik.springcloud.api.annotation.EnableFeignApi;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 @EnableFeignApi
-@EnableDiscoveryClient
-@SpringBootApplication
+@SpringCloudApplication
 public class SpringcloudSamplesApplication {
 
 	public static void main(String[] args) {

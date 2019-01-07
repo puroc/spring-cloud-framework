@@ -1,5 +1,6 @@
 logging:
-    config: classpath:logback-spring.xml
+  config: classpath:logback-spring.xml
+
 
 spring:
     application:
@@ -88,7 +89,6 @@ eureka:
     serviceUrl:
       defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/ #单机Eureka
 
-#启用feign okhttp，停止feign httpclient
 feign:
   httpclient:
     enabled: false
@@ -96,6 +96,15 @@ feign:
     enabled: false
   hystrix:
     enabled: true
+  #请求和响应GZIP压缩支持
+  compression:
+    request:
+      enabled: true
+      #支持压缩的mime types
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
 
 
 

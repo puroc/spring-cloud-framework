@@ -138,9 +138,11 @@ feign:
     enabled: false
   hystrix:
     enabled: true
+  #请求和响应GZIP压缩支持
   compression:
     request:
       enabled: true
+      #支持压缩的mime types
       mime-types: text/xml,application/xml,application/json
       min-request-size: 2048
     response:

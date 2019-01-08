@@ -24,9 +24,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>
@@ -40,6 +42,8 @@ import java.util.List;
 @Validated
 @RequestMapping("/idm/user")
 public class UserController {
+
+    private AtomicInteger num = new AtomicInteger(0);
 
     @Autowired
     private IUserService userService;
@@ -87,10 +91,31 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity getUserInfo() throws Exception {
+        num.incrementAndGet();
+        if (num.get() % 2 == 0) {
+            System.out.println(this.hashCode() + "sleep 1000");
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            System.out.println(sdf.format(date));
+            Thread.sleep(5000);
+
+        } else {
+            System.out.println(this.hashCode() + "sleep 10000");
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            System.out.println(sdf.format(date));
+            Thread.sleep(10000);
+        }
         User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);
         return ResponseEntity.ok(resp);
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+        System.out.println(sdf.format(date));
     }
 
     @DeleteMapping

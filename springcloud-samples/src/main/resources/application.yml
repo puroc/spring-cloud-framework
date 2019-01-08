@@ -123,7 +123,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 7000 #设置调用者执行的超时时间，默认值：1000，hystrix的超时时间应大于ribbon的总超时时间，否则会执行fallback逻辑
+            timeoutInMilliseconds: 7000 #设置调用者执行的超时时间，默认值：1000，hystrix的超时时间应大于ribbon的总超时时间，在hystrix的超时时间内只要有一次ribbon的重试执行成功即可，否则会执行fallback逻辑，
           strategy: SEMAPHORE #SEMAPHORE:在调用线程上执行，并发请求量受信号量计数限制,THREAD: 在单独的线程上执行，并发请求受线程池中的线程数限制.THREAD是默认值
           semaphore:
             maxConcurrentRequests: 10000 #当HystrixCommand.run()使用SEMAPHORE的隔离策略时，设置最大的并发量，默认值：10

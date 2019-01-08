@@ -41,6 +41,10 @@
 			<artifactId>springcloud-domain</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>

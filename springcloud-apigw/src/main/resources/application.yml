@@ -56,6 +56,7 @@ zuul:
       path: /idm/**  #代理前缀idm
       serviceId: springcloud-idm
       stripPrefix: false #是否保留代理前缀
+  retryable: false #是否重试
 
 #  ignored-patterns: #根据表达式排除路由，禁止符合条件的接口被访问
 #      - /api/idm/user/login  #可以配置完整的url，他可以匹配http://localhost:8765/api/idm/user/login
@@ -91,14 +92,22 @@ mybatis-plus:
       map-underscore-to-camel-case: true
       cache-enabled: false
 
-ribbon:
-  eureka:
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: false
+  hystrix:
     enabled: true
-  ReadTimeout: 120000
-  ConnectTimeout: 120000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
+  #请求和响应GZIP压缩支持
+  compression:
+    request:
+      enabled: true
+      #支持压缩的mime types
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
 
 hystrix:
   command:
@@ -122,6 +131,16 @@ hystrix:
           semaphore:
             maxConcurrentRequests: 10000 #当HystrixCommand.run()使用SEMAPHORE的隔离策略时，设置最大的并发量，默认值：10
 
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 1000 #请求处理的超时时间，默认1000毫秒
+  ConnectTimeout: 1000 #请求连接的超时时间，默认1000毫秒
+  MaxAutoRetries: 2 #对当前实例的重试次数
+  MaxAutoRetriesNextServer: 1 #切换实例的重试次数
+  OkToRetryOnAllOperations: false #是否所有请求都重试
+
+
 gate:
   ignore:
     startWith: /static,/user/login
@@ -138,23 +157,6 @@ eureka:
 #            defaultZone: http://localhost:8761/eureka/
                     # docker 部署开启
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
-
-feign:
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: false
-  hystrix:
-    enabled: true
-  #请求和响应GZIP压缩支持
-  compression:
-    request:
-      enabled: true
-      #支持压缩的mime types
-      mime-types: text/xml,application/xml,application/json
-      min-request-size: 2048
-    response:
-      enabled: true
 
 jwt:
   expire: 3600

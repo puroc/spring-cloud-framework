@@ -38,9 +38,14 @@ public class Test implements CommandLineRunner {
                                 if ("quit".equalsIgnoreCase(line)) {
                                     System.out.println("game over");
                                     System.exit(0);
-                                } else {
+                                } else if ("1".equalsIgnoreCase(line)) {
                                     login();
-                                    System.out.println("ok");
+                                    System.out.println("login has send");
+                                } else if ("2".equalsIgnoreCase(line)) {
+                                    getUserInfo();
+                                    System.out.println("getUserInfo has send");
+                                } else {
+                                    System.out.println("please input \"1\" or \"quit\"");
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -62,5 +67,12 @@ public class Test implements CommandLineRunner {
         ResponseEntity resp = userService.login(baseReq);
         long end = System.currentTimeMillis();
         System.out.println("111111111111111 " + resp + ",time:" + (end - start));
+    }
+
+    private void getUserInfo() {
+        long start = System.currentTimeMillis();
+        ResponseEntity resp = userService.getUserInfo();
+        long end = System.currentTimeMillis();
+        System.out.println("222222222222 " + resp + ",time:" + (end - start));
     }
 }

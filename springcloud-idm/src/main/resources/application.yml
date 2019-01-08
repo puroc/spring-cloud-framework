@@ -85,15 +85,6 @@ eureka:
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/ #单机Eureka
 #            defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/,http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8762}/eureka/ #集群Eureka
 
-#ribbon:
-#  eureka:
-#    enabled: true
-#  ReadTimeout: 120000
-#  ConnectTimeout: 120000
-#  MaxAutoRetries: 0
-#  MaxAutoRetriesNextServer: 1
-#  OkToRetryOnAllOperations: false
-
 auth:
   user:
     token-header: Authorization

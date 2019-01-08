@@ -87,8 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public 
-    ResponseEntity getUserInfo() {
+    public ResponseEntity getUserInfo() throws Exception {
         User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
         resp.setPayLoad(user);

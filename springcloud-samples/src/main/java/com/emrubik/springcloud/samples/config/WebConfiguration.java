@@ -1,7 +1,6 @@
 package com.emrubik.springcloud.samples.config;
 
 
-import com.emrubik.springcloud.api.interceptor.FeignRequestInterceptor;
 import com.emrubik.springcloud.common.interceptor.ControllerInterceptor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

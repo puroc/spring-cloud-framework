@@ -1,7 +1,7 @@
 package com.emrubik.springcloud.dao.mapper;
 
-import com.emrubik.springcloud.dao.entity.DaBasicPressureT;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.emrubik.springcloud.dao.entity.DaBasicPressureT;
 
 /**
  * <p>

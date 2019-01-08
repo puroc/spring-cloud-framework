@@ -9,11 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/sample")
@@ -27,9 +22,6 @@ public class TestController {
 
     @GetMapping("/getUserInfo")
     public String test() {
-//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-//        HttpServletRequest request = attributes.getRequest();
-//        RequestContextHolder.setRequestAttributes(attributes, true);
         long start = System.currentTimeMillis();
         ResponseEntity resp = userService.getUserInfo();
         long end = System.currentTimeMillis();
@@ -38,9 +30,6 @@ public class TestController {
 
     @GetMapping("/login")
     public String login() {
-//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-//        HttpServletRequest request = attributes.getRequest();
-//        RequestContextHolder.setRequestAttributes(attributes, true);
         LoginReq loginReq = new LoginReq();
         loginReq.setUsername("lisi");
         loginReq.setPassword("111");

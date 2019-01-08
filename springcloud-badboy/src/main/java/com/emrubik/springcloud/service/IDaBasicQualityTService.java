@@ -1,7 +1,7 @@
 package com.emrubik.springcloud.service;
 
-import com.emrubik.springcloud.dao.entity.DaBasicQualityT;
 import com.baomidou.mybatisplus.service.IService;
+import com.emrubik.springcloud.dao.entity.DaBasicQualityT;
 
 /**
  * <p>

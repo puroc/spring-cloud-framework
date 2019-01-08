@@ -58,7 +58,9 @@ public class Test implements CommandLineRunner {
         loginReq.setPassword("111");
         BaseReq<LoginReq> baseReq = new BaseReq<LoginReq>();
         baseReq.setPayLoad(loginReq);
+        long start = System.currentTimeMillis();
         ResponseEntity resp = userService.login(baseReq);
-        System.out.println("111111111111111 " + resp.getStatusCode());
+        long end = System.currentTimeMillis();
+        System.out.println("111111111111111 " + resp + ",time:" + (end - start));
     }
 }

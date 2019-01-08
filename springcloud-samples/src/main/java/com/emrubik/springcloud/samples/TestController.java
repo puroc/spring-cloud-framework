@@ -27,9 +27,9 @@ public class TestController {
 
     @GetMapping("/getUserInfo")
     public String test() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        RequestContextHolder.setRequestAttributes(attributes, true);
+//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = attributes.getRequest();
+//        RequestContextHolder.setRequestAttributes(attributes, true);
         long start = System.currentTimeMillis();
         ResponseEntity resp = userService.getUserInfo();
         long end = System.currentTimeMillis();
@@ -38,9 +38,9 @@ public class TestController {
 
     @GetMapping("/login")
     public String login() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        RequestContextHolder.setRequestAttributes(attributes, true);
+//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = attributes.getRequest();
+//        RequestContextHolder.setRequestAttributes(attributes, true);
         LoginReq loginReq = new LoginReq();
         loginReq.setUsername("lisi");
         loginReq.setPassword("111");

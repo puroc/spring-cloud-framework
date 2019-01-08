@@ -24,7 +24,7 @@ public class JwtHelper {
 
     private static final String PAYLOAD = "payload";
 
-    @Value("${jwt.expire}")
+    @Value("${jwt.expire:3600}")
     private String expire;
 
     //expire过期时间，单位：秒

@@ -67,7 +67,6 @@ public class UserController {
             resp.setMessage(Constants.USER_NOT_EXIST);
             return ResponseEntity.ok(resp);
         }
-
         LoginResp loginResp = new LoginResp();
 
         //生成token

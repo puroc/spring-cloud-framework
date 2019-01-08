@@ -6,17 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 @Slf4j
 @Component
-public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
+public class FeignRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
+        // 如果hystrix使用的是thread模式，他会用自己的线程池去发送请求，需要在这步之前执行RequestContextHolder.setRequestAttributes(attributes, true)，将attributes设置到子线程中
         HttpServletRequest request = attributes.getRequest();
         Enumeration<String> headerNames = request.getHeaderNames();
         //将请求中的头信息添加到feign发送的请求中

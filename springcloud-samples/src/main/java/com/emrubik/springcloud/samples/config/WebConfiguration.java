@@ -1,19 +1,13 @@
-package com.emrubik.springcloud.idm.config;
+package com.emrubik.springcloud.samples.config;
 
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.emrubik.springcloud.common.exception.handler.GlobalExceptionHandler;
+import com.emrubik.springcloud.api.interceptor.FeignRequestInterceptor;
 import com.emrubik.springcloud.common.interceptor.ControllerInterceptor;
-import com.emrubik.springcloud.common.interceptor.JwtInterceptor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -22,18 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-@Configuration("idmWebConfig")
+@Configuration("sampleWebConfig")
 @Primary
 @Data
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ControllerInterceptor controllerInterceptor;
-
-    @Bean
-    public GlobalExceptionHandler getGlobalExceptionHandler() {
-        return new GlobalExceptionHandler();
-    }
 
     /*
      * 添加拦截器
@@ -42,7 +31,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         ArrayList<String> commonPathPatterns = getExcludeCommonPathPatterns();
         registry.addInterceptor(getControllerInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
-        registry.addInterceptor(getJwtInterceptor()).addPathPatterns("/**").excludePathPatterns(commonPathPatterns.toArray(new String[]{}));
         super.addInterceptors(registry);
     }
 
@@ -51,10 +39,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return new MethodValidationPostProcessor();
     }
 
-    @Bean
-    public JwtInterceptor getJwtInterceptor() {
-        return new JwtInterceptor();
-    }
 
     private ArrayList<String> getExcludeCommonPathPatterns() {
         ArrayList<String> list = new ArrayList<>();

@@ -126,7 +126,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 3000 #设置调用者执行的超时时间，默认值：1000
+            timeoutInMilliseconds: 7000 #设置调用者执行的超时时间，默认值：1000，hystrix的超时时间应大于ribbon的总超时时间，否则会执行fallback逻辑
           strategy: SEMAPHORE #SEMAPHORE:在调用线程上执行，并发请求量受信号量计数限制,THREAD: 在单独的线程上执行，并发请求受线程池中的线程数限制.THREAD是默认值
           semaphore:
             maxConcurrentRequests: 10000 #当HystrixCommand.run()使用SEMAPHORE的隔离策略时，设置最大的并发量，默认值：10
@@ -134,11 +134,11 @@ hystrix:
 ribbon:
   eureka:
     enabled: true
-  ReadTimeout: 1000 #请求处理的超时时间，默认1000毫秒
+  ReadTimeout: 3000 #请求处理的超时时间，默认1000毫秒
   ConnectTimeout: 1000 #请求连接的超时时间，默认1000毫秒
-  MaxAutoRetries: 2 #对当前实例的重试次数
+  MaxAutoRetries: 0 #对当前实例的重试次数
   MaxAutoRetriesNextServer: 1 #切换实例的重试次数
-  OkToRetryOnAllOperations: false #是否所有请求都重试
+  OkToRetryOnAllOperations: false #是否所有请求都重试，默认get请求会重试，post请求不会重试
 
 
 gate:

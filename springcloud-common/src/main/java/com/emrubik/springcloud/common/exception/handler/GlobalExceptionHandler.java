@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
         resp.setMessage("操作失败");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity MethodArgumentNotValidExceptionHandler(HttpServletResponse response, Throwable t) {
         BaseResp resp = new BaseResp();

@@ -51,13 +51,12 @@ public class OrgController {
     private IRoleService roleService;
 
     @GetMapping("/{orgId}/users")
-    public @NotNull
-    ResponseEntity getUserListByOrgId(@PathVariable String orgId,
-                                      @RequestParam int current, int size,
-                                      @RequestParam(required = false) String name,
-                                      @RequestParam(required = false) String username,
-                                      @RequestParam(required = false) String phone,
-                                      @RequestParam(required = false) String email) throws Exception {
+    public ResponseEntity getUserListByOrgId(@PathVariable String orgId,
+                                             @RequestParam int current, int size,
+                                             @RequestParam(required = false) String name,
+                                             @RequestParam(required = false) String username,
+                                             @RequestParam(required = false) String phone,
+                                             @RequestParam(required = false) String email) throws Exception {
 
         //根据当前机构ID查询出机构树，并转换为list
         List<Integer> orgList = getOrgList(orgId);
@@ -84,10 +83,9 @@ public class OrgController {
     }
 
     @GetMapping("/{orgId}/roles")
-    public @NotNull
-    ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
-                                      @RequestParam int current, int size,
-                                      @RequestParam(required = false) String name) {
+    public ResponseEntity getRoleListByOrgId(@PathVariable String orgId,
+                                             @RequestParam int current, int size,
+                                             @RequestParam(required = false) String name) {
         //根据当前机构获取其上级所有机构（包括当前机构）
         List<Integer> upperOrgList = orgService.getUpperOrgList(orgId);
 
@@ -110,8 +108,7 @@ public class OrgController {
     }
 
     @GetMapping("{orgId}/tree")
-    public @NotNull
-    ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
+    public ResponseEntity getOrgTree(@PathVariable @NotBlank String orgId) {
         OrgTree orgTree = orgService.getOrgTree(orgId);
         BaseResp<OrgTree> baseResp = new BaseResp<OrgTree>();
         baseResp.setPayLoad(orgTree);
@@ -119,8 +116,7 @@ public class OrgController {
     }
 
     @GetMapping("{orgId}")
-    public @NotNull
-    ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId) {
+    public ResponseEntity getOrgInfo(@PathVariable @NotBlank String orgId) {
         Org org = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId));
         BaseResp<Org> baseResp = new BaseResp<Org>();
         baseResp.setPayLoad(org);
@@ -128,8 +124,7 @@ public class OrgController {
     }
 
     @PostMapping("{orgId}")
-    public @NotNull
-    ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq, @PathVariable String orgId) {
+    public ResponseEntity addOrg(@RequestBody @Validated BaseReq<AddOrgReq> baseReq, @PathVariable String orgId) {
         AddOrgReq addOrgReq = baseReq.getPayloads().get(0);
         Org org = new Org();
         org.setName(addOrgReq.getLabel());
@@ -145,8 +140,7 @@ public class OrgController {
     }
 
     @DeleteMapping("{orgId}")
-    public @NotNull
-    ResponseEntity deleteOrg(@PathVariable String orgId) {
+    public ResponseEntity deleteOrg(@PathVariable String orgId) {
         BaseResp baseResp = new BaseResp();
         List<Org> sonOrgList = orgService.selectList(new EntityWrapper<Org>().eq("parent_id", orgId));
         if (!sonOrgList.isEmpty()) {
@@ -154,8 +148,8 @@ public class OrgController {
             baseResp.setMessage("该机构拥有下级机构，不允许删除");
             return ResponseEntity.ok(baseResp);
         }
-        Org rootOrg = orgService.selectOne(new EntityWrapper<Org>().eq("id",orgId).eq("parent_id", 0));
-        if(rootOrg!=null){
+        Org rootOrg = orgService.selectOne(new EntityWrapper<Org>().eq("id", orgId).eq("parent_id", 0));
+        if (rootOrg != null) {
             baseResp.setResultCode(BaseResp.CAN_NOT_DELETE_ROOT_ORG);
             baseResp.setMessage("不能删除企业根机构");
             return ResponseEntity.ok(baseResp);

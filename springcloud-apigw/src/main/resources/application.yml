@@ -100,27 +100,27 @@ ribbon:
   MaxAutoRetriesNextServer: 1
   OkToRetryOnAllOperations: false
 
-#hystrix:
-#  command:
-#    default:
-#      metrics:
-#        rollingStats:
-#          timeInMilliseconds: 10000 #设置统计滚动窗口的时间长度
-#      circuitBreaker:
-#        sleepWindowInMilliseconds: 5 #短路多久以后开始尝试是否恢复（进入半开状态，若请求成功执行，则进入关闭状态，若失败，则进入打开状态）,默认5s
-#        requestVolumeThreshold: 20 #当在配置时间窗口内（timeInMilliseconds: 10000)达到此数量的失败后,进行短路。默认20个
-#        errorThresholdPercentage: 50 #出错百分比阈值,当达到此阈值后,开始短路。默认50%
-#      fallback:
-#        isolation:
-#          semaphore:
-#            maxConcurrentRequests: 1000 #此属性设置从调用线程允许HystrixCommand.getFallback（）方法允许的最大并发请求数，如果达到最大的并发量，则接下来的请求会被拒绝并且抛出异常，默认值：10
-#      execution:
-#        isolation:
-#          thread:
-#            timeoutInMilliseconds: 60000 #设置调用者执行的超时时间，默认值：1000
-#          strategy: SEMAPHORE #SEMAPHORE:在调用线程上执行，并发请求量受信号量计数限制,THREAD: 在单独的线程上执行，并发请求受线程池中的线程数限制.THREAD是默认值
-#          semaphore:
-#            maxConcurrentRequests: 10000 #当HystrixCommand.run()使用SEMAPHORE的隔离策略时，设置最大的并发量，默认值：10
+hystrix:
+  command:
+    default:
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 10000 #设置统计滚动窗口的时间长度
+      circuitBreaker:
+        sleepWindowInMilliseconds: 5 #短路多久以后开始尝试是否恢复（进入半开状态，若请求成功执行，则进入关闭状态，若失败，则进入打开状态）,默认5s
+        requestVolumeThreshold: 20 #当在配置时间窗口内（timeInMilliseconds: 10000)达到此数量的失败后,进行短路。默认20个
+        errorThresholdPercentage: 50 #出错百分比阈值,当达到此阈值后,开始短路。默认50%
+      fallback:
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 1000 #此属性设置从调用线程允许HystrixCommand.getFallback（）方法允许的最大并发请求数，如果达到最大的并发量，则接下来的请求会被拒绝并且抛出异常，默认值：10
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 #设置调用者执行的超时时间，默认值：1000
+          strategy: SEMAPHORE #SEMAPHORE:在调用线程上执行，并发请求量受信号量计数限制,THREAD: 在单独的线程上执行，并发请求受线程池中的线程数限制.THREAD是默认值
+          semaphore:
+            maxConcurrentRequests: 10000 #当HystrixCommand.run()使用SEMAPHORE的隔离策略时，设置最大的并发量，默认值：10
 
 gate:
   ignore:

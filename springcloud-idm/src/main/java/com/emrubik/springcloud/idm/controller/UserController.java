@@ -52,7 +52,7 @@ public class UserController {
 
     @IgnoreJwtValidation
     @PostMapping("/login")
-    public @NotNull
+    public 
     ResponseEntity login(@RequestBody @Validated BaseReq<LoginReq> baseReq) throws Exception {
         LoginReq loginReq = baseReq.getPayloads().get(0);
 
@@ -87,7 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public @NotNull
+    public 
     ResponseEntity getUserInfo() {
         User user = userService.getUserInfo(BaseContextHandler.getUserId());
         BaseResp<User> resp = new BaseResp<User>();
@@ -96,7 +96,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public @NotNull
+    public 
     ResponseEntity
     deleteUserList(@RequestBody BaseReq<User> baseReq) {
         List<String> userIdList = new ArrayList<String>();
@@ -115,7 +115,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    public @NotNull
+    public 
     ResponseEntity deleteUser(@PathVariable String username) {
         boolean result = userService.delete(new EntityWrapper<User>().eq("username", username));
         BaseResp resp = new BaseResp();
@@ -127,7 +127,7 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public @NotNull
+    public 
     ResponseEntity updateUser(@PathVariable String username, @RequestBody BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
@@ -141,7 +141,7 @@ public class UserController {
     }
 
     @PostMapping
-    public @NotNull
+    public 
     ResponseEntity addUser(@RequestBody @Validated BaseReq<User> baseReq) {
         User user = baseReq.getPayloads().get(0);
         user.setTimestamp(new Date());
@@ -162,7 +162,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public @NotNull
+    public 
     ResponseEntity logout() throws Exception {
         boolean result = userTokenBindService.delete(new EntityWrapper<UserTokenBind>().eq("user_id", BaseContextHandler.getUserId()));
         return ResponseEntity.ok().build();
@@ -195,7 +195,7 @@ public class UserController {
     }
 
     @GetMapping("token")
-    public @NotNull
+    public 
     ResponseEntity refreshToken() throws Exception {
         User user = userService.selectOne(new EntityWrapper<User>().eq("id", BaseContextHandler.getUserId()));
         //生成token

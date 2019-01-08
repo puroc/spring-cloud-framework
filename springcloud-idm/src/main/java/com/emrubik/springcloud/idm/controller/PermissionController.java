@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author puroc123
@@ -30,8 +30,7 @@ public class PermissionController {
     private IPermissionService permissionService;
 
     @GetMapping
-    public @NotNull
-    ResponseEntity getPermissionList(){
+    public ResponseEntity getPermissionList() {
         List<Permission> permissions = permissionService.selectList(new EntityWrapper<Permission>());
         BaseResp<Permission> baseResp = new BaseResp<Permission>();
         baseResp.setPayloads(permissions);

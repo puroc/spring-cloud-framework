@@ -42,7 +42,7 @@ public class RoleController {
 
     @Transactional
     @PostMapping
-    public @NotNull
+    public 
     ResponseEntity addRole(@RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());
@@ -66,7 +66,7 @@ public class RoleController {
     }
 
     @PostMapping("/{id}/permission")
-    public @NotNull
+    public 
     ResponseEntity addRolePermissionBind(@PathVariable String id, @RequestBody @Validated BaseReq<RolePermissionBind> baseReq) {
         List<RolePermissionBind> permissionBinds = baseReq.getPayloads();
         boolean result = rolePermissionBindService.insertBatch(permissionBinds);
@@ -80,7 +80,7 @@ public class RoleController {
 
     @DeleteMapping("/{id}")
     @Transactional(rollbackFor = Exception.class)
-    public @NotNull
+    public 
     ResponseEntity deleteRole(@PathVariable String id) {
         BaseResp resp = new BaseResp();
         //如果有用户绑定了这个角色，则不允许删除
@@ -110,7 +110,7 @@ public class RoleController {
 
     @Transactional
     @PutMapping("/{id}")
-    public @NotNull
+    public 
     ResponseEntity updateRole(@PathVariable String id, @RequestBody @Validated BaseReq<Role> baseReq) {
         Role role = baseReq.getPayloads().get(0);
         role.setTimestamp(new Date());
@@ -158,7 +158,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}/permission")
-    public @NotNull
+    public 
     ResponseEntity deleteRolePermissionBind(@PathVariable String id) {
         boolean result = rolePermissionBindService.delete(new EntityWrapper<RolePermissionBind>().eq("role_id", id));
         BaseResp resp = new BaseResp();
@@ -170,7 +170,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public @NotNull
+    public 
     ResponseEntity getRoleInfo(@PathVariable String id) {
         Role role = roleService.getRoleInfo(id);
         BaseResp<Role> baseResp = new BaseResp<Role>();
@@ -179,7 +179,7 @@ public class RoleController {
     }
 
     @DeleteMapping
-    public @NotNull
+    public 
     ResponseEntity
     deleteRoleList(@RequestBody BaseReq<Role> baseReq) {
         List<String> roleIdList = new ArrayList<String>();
